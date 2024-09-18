@@ -1,31 +1,105 @@
-import { useRoutes } from 'react-router-dom'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { path } from './path'
 import AuthenLayout from 'src/layouts/AuthenLayout'
 import Login from 'src/pages/Login'
 import Register from 'src/pages/Register'
 import ForgotPassword from 'src/pages/ForgotPassword'
+import { useAppContext } from 'src/contexts/app.context'
+import MainLayout from 'src/layouts/MainLayout'
+import HomePage from 'src/pages/HomePage'
+import PageNotFound from 'src/pages/PageNotFound'
+import NewsFeed from 'src/pages/NewsFeed'
+import SearchPage from 'src/pages/SearchPage'
+import Profile from 'src/pages/Profile'
+
+const ProtectedRoute: React.FC = () => {
+  const { isAuthenticated } = useAppContext()
+  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+}
+
+const RejectedRoute: React.FC = () => {
+  const { isAuthenticated } = useAppContext()
+  return !isAuthenticated ? <Outlet /> : <Navigate to='*' />
+}
 
 export default function useRouteElements() {
   return useRoutes([
     {
       path: '',
-      element: <AuthenLayout />,
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: path.home,
+          index: true,
+          element: (
+            <MainLayout>
+              <HomePage />
+            </MainLayout>
+          )
+        },
+        {
+          path: path.newsFeed,
+          element: (
+            <MainLayout>
+              <NewsFeed />
+            </MainLayout>
+          )
+        },
+        {
+          path: path.search,
+          element: (
+            <MainLayout>
+              <SearchPage />
+            </MainLayout>
+          )
+        },
+        {
+          path: path.profile,
+          element: (
+            <MainLayout>
+              <Profile />
+            </MainLayout>
+          )
+        }
+      ]
+    },
+    {
+      path: '',
+      element: <RejectedRoute />,
       children: [
         {
           path: path.login,
-          index: true,
-          element: <Login />
+          element: (
+            <AuthenLayout>
+              <Login />
+            </AuthenLayout>
+          )
         },
         {
           path: path.register,
-          element: <Register />
+          element: (
+            <AuthenLayout>
+              <Register />
+            </AuthenLayout>
+          )
         },
         {
           path: path.forgotPassword,
-          index: true,
-          element: <ForgotPassword />
+          element: (
+            <AuthenLayout>
+              <ForgotPassword />
+            </AuthenLayout>
+          )
         }
       ]
+    },
+    {
+      path: '*',
+      element: (
+        <AuthenLayout>
+          <PageNotFound />
+        </AuthenLayout>
+      )
     }
   ])
 }

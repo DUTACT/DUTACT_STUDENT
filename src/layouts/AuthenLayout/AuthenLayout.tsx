@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
 
-export default function AuthenLayout() {
+interface Props {
+  children?: React.ReactNode
+}
+
+export default function AuthenLayout({ children }: Props) {
   const [isHiddenImage, setIsHiddenImage] = useState<boolean>(false)
 
   useEffect(() => {
@@ -26,13 +29,11 @@ export default function AuthenLayout() {
     <div className='flex h-[100vh] w-[100vw] items-center justify-center gap-4 bg-white px-10 py-6'>
       <div className='flex h-full w-full min-w-[500px] max-w-[600px] flex-col'>
         <div className='ml-[-12px] flex items-center gap-2'>
-          <img src='src/assets/img/dutact-logo.png' alt='dutact-logo' className='h-[40px] w-[40px]' />
+          <img src='src/assets/img/dutact-logo.png' alt='dutact-logo' className='h-logo-md w-logo-md' />
           <div className='text-xl font-semibold tracking-wide'>Dutact.</div>
         </div>
-        <div className='flex flex-1 items-center justify-center px-16'>
-          <Outlet />
-        </div>
-        <div className='flex min-h-[40px] items-end gap-2'>
+        <div className='flex flex-1 items-center justify-center px-16'>{children}</div>
+        <div className='min-h-logo-md flex items-end gap-2'>
           <img src='src/assets/img/dut-logo.jpg' alt='dut-logo' className='h-[30px] w-[30px]' />
           <div className='flex flex-col justify-center gap-0'>
             <div className='text-[10px] font-normal leading-[13px] text-neutral-6'>Website thuộc về</div>
