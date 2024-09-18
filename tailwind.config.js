@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary': '#2C91F6',
+        primary: '#2C91F6',
         'neutral-0': '#ffffff',
         'neutral-1': '#fcfcfc',
         'neutral-2': '#f2f4f7',
@@ -27,7 +27,22 @@ module.exports = {
         'body-text': '#242424',
         'body-text-2': '#525252',
         'hover-icon': '#e7e7e7',
-        'icon-gray': '#c2cfe0',
+        'icon-gray': '#c2cfe0'
+      },
+      width: {
+        sidebar: 'var(--sidebar)',
+        'logo-md': 'var(--logo-md',
+        'logo-lg': 'var(--logo-lg)'
+      },
+      height: {
+        'logo-md': 'var(--logo-md',
+        'logo-lg': 'var(--logo-lg)'
+      },
+      margin: {
+        sidebar: 'var(--sidebar)'
+      },
+      padding: {
+        sidebar: 'var(--sidebar)'
       }
     }
   },
