@@ -5,8 +5,8 @@ module.exports = {
     extend: {
       colors: {
         primary: '#2C91F6',
-        'neutral-0': '#ffffff',
-        'neutral-1': '#fcfcfc',
+        'neutral-0': '#fafafa',
+        'neutral-1': '#f5f5f5',
         'neutral-2': '#f2f4f7',
         'neutral-3': '#eaecf0',
         'neutral-4': '#d0d5dd',
@@ -29,6 +29,9 @@ module.exports = {
         'hover-icon': '#e7e7e7',
         'icon-gray': '#c2cfe0'
       },
+      maxWidth: {
+        page: 'var(--page)'
+      },
       width: {
         sidebar: 'var(--sidebar)',
         'logo-md': 'var(--logo-md',
@@ -36,15 +39,20 @@ module.exports = {
       },
       height: {
         'logo-md': 'var(--logo-md',
-        'logo-lg': 'var(--logo-lg)'
+        'logo-lg': 'var(--logo-lg)',
+        'header-page': 'var(--h-header-page)'
       },
       margin: {
         sidebar: 'var(--sidebar)'
       },
       padding: {
         sidebar: 'var(--sidebar)'
+      },
+      boxShadow: {
+        custom:
+          '0px -1px 1px 0px rgba(0, 0, 0, 0.04) inset, 0px 2px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px 4px 8px -4px rgba(80, 80, 80, 0.20)'
       }
     }
   },
-  plugins: []
+  plugins: [require('@tailwindcss/aspect-ratio')]
 }
