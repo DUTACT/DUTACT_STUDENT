@@ -63,7 +63,7 @@ export default function Register() {
           title='Đăng ký'
           type='button'
           classButton='bg-primary/90 hover:bg-primary mt-4'
-          classTitle='uppercase font-semibold text-neutral-0 text-md tracking-wide'
+          classTitle='uppercase font-semibold text-white text-md tracking-wide'
           classLoadingIndicator='block'
         />
         <div className='mt-4 flex w-full items-center justify-center gap-2'>

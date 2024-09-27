@@ -8,7 +8,7 @@ import LogOutActiveIcon from 'src/assets/icons/i-log-out-active.svg?react'
 
 export default function Sidebar() {
   return (
-    <div className='w-sidebar fixed bottom-0 left-0 top-0 flex h-full flex-col items-center'>
+    <div className='fixed bottom-0 left-0 top-0 flex h-full w-sidebar flex-col items-center bg-neutral-1'>
       <div className='py-2'>
         <img src='src/assets/img/dutact-logo.png' alt='dutact-logo' className='h-logo w-logo' />
       </div>
@@ -17,7 +17,7 @@ export default function Sidebar() {
           <NavLink
             key={path}
             to={path}
-            className={cn('flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-2')}
+            className={cn('flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-3')}
           >
             {({ isActive }) =>
               isActive ? <IconActive className='h-[28px] w-[28px]' /> : <Icon className='h-[28px] w-[28px]' />
@@ -26,11 +26,11 @@ export default function Sidebar() {
         ))}
       </div>
       <div className='flex flex-col gap-4 py-[22px]'>
-        <div className='group flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-2'>
+        <div className='group flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-3'>
           <PinIcon className='block h-[28px] w-[28px] group-hover:hidden' />
           <PinActiveIcon className='hidden h-[28px] w-[28px] group-hover:block' />
         </div>
-        <div className='group flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-2'>
+        <div className='group flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-3'>
           <LogOutIcon className='block h-[28px] w-[28px] group-hover:hidden' />
           <LogOutActiveIcon className='hidden h-[28px] w-[28px] group-hover:block' />
         </div>
