@@ -1,8 +1,8 @@
 import { InputHTMLAttributes } from 'react'
-import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
+import type { FieldPath, FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form'
 import { cn } from 'src/lib/utils'
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface Props<TFieldValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   classNameLabel?: string
   classNameInput?: string
@@ -11,12 +11,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   labelName?: string
   errorMessage?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register?: UseFormRegister<any>
-  rules?: RegisterOptions
+  register?: UseFormRegister<TFieldValues>
+  rules?: RegisterOptions<TFieldValues, FieldPath<TFieldValues>>
+  name: FieldPath<TFieldValues>
   showIsRequired?: boolean
 }
 
-export default function Input({
+export default function Input<TFieldValues extends FieldValues = FieldValues>({
   className = '',
   classNameLabel = '',
   classNameInput = '',
@@ -29,7 +30,7 @@ export default function Input({
   errorMessage,
   showIsRequired = false,
   ...rest
-}: Props) {
+}: Props<TFieldValues>) {
   const registerResult = register && name ? register(name, rules) : null
   return (
     <div className='mt-2'>
