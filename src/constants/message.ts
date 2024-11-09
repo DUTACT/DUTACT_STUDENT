@@ -1,5 +1,5 @@
 export const ERROR_MESSAGE = {
-  invalid_credentials: 'Tên tài khoản hoặc mật khẩu không đúng',
+  invalid_credentials: 'Email sinh viên hoặc mật khẩu không đúng',
   UNEXPECTED_ERROR: 'An unexpected error occurred'
 }
 

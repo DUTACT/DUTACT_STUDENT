@@ -47,7 +47,10 @@ export default [
       'react/jsx-no-target-blank': 'warn',
       'eslint-comments/no-unused-disable': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', ignoreRestSiblings: true }],
+      'no-unused-vars': [
+        'warn',
+        { vars: 'all', args: 'after-used', argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true }
+      ],
       'import/no-unused-modules': ['warn', { unusedExports: true }],
       'prettier/prettier': [
         'warn',

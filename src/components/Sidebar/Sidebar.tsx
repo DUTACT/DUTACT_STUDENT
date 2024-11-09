@@ -1,12 +1,22 @@
 import { NavLink } from 'react-router-dom'
 import { SIDEBAR_ROUTES } from './constants'
-import { cn } from 'src/lib/utils'
+import { cn } from 'src/lib/tailwind/utils'
 import PinIcon from 'src/assets/icons/i-pin.svg?react'
 import PinActiveIcon from 'src/assets/icons/i-pin-active.svg?react'
 import LogOutIcon from 'src/assets/icons/i-log-out.svg?react'
 import LogOutActiveIcon from 'src/assets/icons/i-log-out-active.svg?react'
+import { useAppContext } from 'src/contexts/app.context'
+import { setupToken } from 'src/config/queryClient'
 
 export default function Sidebar() {
+  const { setIsAuthenticated } = useAppContext()
+
+  const handleLogOut = () => {
+    localStorage.removeItem('access_token')
+    setIsAuthenticated(false)
+    setupToken('')
+  }
+
   return (
     <div className='fixed bottom-0 left-0 top-0 flex h-full w-sidebar flex-col items-center bg-neutral-1'>
       <div className='py-2'>
@@ -30,7 +40,10 @@ export default function Sidebar() {
           <PinIcon className='block h-[28px] w-[28px] group-hover:hidden' />
           <PinActiveIcon className='hidden h-[28px] w-[28px] group-hover:block' />
         </div>
-        <div className='group flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-3'>
+        <div
+          className='group flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 hover:bg-neutral-3'
+          onClick={handleLogOut}
+        >
           <LogOutIcon className='block h-[28px] w-[28px] group-hover:hidden' />
           <LogOutActiveIcon className='hidden h-[28px] w-[28px] group-hover:block' />
         </div>

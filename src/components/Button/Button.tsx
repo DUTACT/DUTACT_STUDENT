@@ -1,13 +1,15 @@
-import { ButtonHTMLAttributes } from 'react'
-import { cn } from 'src/lib/utils'
+import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { cn } from 'src/lib/tailwind/utils'
 import LoadingIndicator from '../LoadingIndicator'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   title: string
   classButton?: string
+  classButtonDisabled?: string
   classTitle?: string
+  classWrapperLoading?: string
   classLoadingIndicator?: string
-  href?: string
+  iconComponent?: ReactNode
 }
 
 export default function Button({
@@ -15,22 +17,27 @@ export default function Button({
   type = 'button',
   disabled = false,
   classButton = '',
+  classButtonDisabled = '',
   classTitle = '',
+  classWrapperLoading = '',
   classLoadingIndicator = '',
-  href = '',
+  iconComponent,
   ...rest
 }: Props) {
   return (
     <button
+      type={type}
       className={cn(
-        'flex w-full items-center justify-center gap-2 border-none px-4 py-2 outline-none hover:outline-none focus:outline-none',
-        classButton
+        'flex w-full items-center justify-center gap-2 border border-transparent px-4 py-2 outline-none hover:outline-none focus:outline-none',
+        classButton,
+        disabled ? classButtonDisabled : ''
       )}
+      disabled={disabled}
       {...rest}
     >
-      <LoadingIndicator />
-
-      <span className={cn('text-md font-medium', classTitle)}>{title}</span>
+      <LoadingIndicator classWrapper={classWrapperLoading} classLoadingIndicator={classLoadingIndicator} />
+      {iconComponent && iconComponent}
+      <span className={cn('test-base font-medium', classTitle)}>{title}</span>
     </button>
   )
 }
