@@ -14,12 +14,12 @@ import Profile from 'src/pages/Profile'
 
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated } = useAppContext()
-  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
 }
 
 const RejectedRoute: React.FC = () => {
   const { isAuthenticated } = useAppContext()
-  return !isAuthenticated ? <Outlet /> : <Navigate to='*' />
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.home} />
 }
 
 export default function useRouteElements() {
