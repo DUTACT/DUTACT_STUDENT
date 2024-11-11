@@ -6,8 +6,8 @@ export interface EventOfOrganizer {
   endAt: string
   startRegistrationAt: string
   endRegistrationAt: string
-  registeredAt: string
-  followedAt: string
+  registeredAt: string | null
+  followedAt: string | null
   status: {
     type: string
     moderatedAt: string
@@ -18,4 +18,16 @@ export interface EventOfOrganizer {
     name: string
     avatarUrl: string
   }
+}
+
+export interface RegisterResponse {
+  studentId: number
+  eventId: number
+  registeredAt: string
+}
+
+export interface FollowResponse {
+  studentId: number
+  eventId: number
+  followAt: string
 }
