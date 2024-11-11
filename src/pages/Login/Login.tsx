@@ -94,7 +94,7 @@ export default function Login() {
         />
         <div className='mt-4 flex w-full items-center justify-center gap-2'>
           <span className='text-sm font-medium text-neutral-6'>Bạn chưa có tài khoản?</span>
-          <Link to={path.register} className='text-sm font-medium text-primary/90 hover:text-primary/100'>
+          <Link to={path.register} className='text-md font-medium text-primary/90 hover:text-primary/100'>
             Đăng ký
           </Link>
         </div>
