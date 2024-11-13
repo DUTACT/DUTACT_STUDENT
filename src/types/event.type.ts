@@ -1,3 +1,9 @@
+export interface OrganizerInformation {
+  id: number
+  name: string
+  avatarUrl: string
+}
+
 export interface EventOfOrganizer {
   id: number
   name: string
@@ -13,11 +19,7 @@ export interface EventOfOrganizer {
     moderatedAt: string
   }
   coverPhotoUrl: string
-  organizer: {
-    id: number
-    name: string
-    avatarUrl: string
-  }
+  organizer: OrganizerInformation
 }
 
 export interface RegisterResponse {
