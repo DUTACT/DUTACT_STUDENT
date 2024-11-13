@@ -14,7 +14,7 @@ import { DATE_TIME_FORMATS } from 'src/constants/common'
 import DUTLogo from 'src/assets/img/dut-logo.jpg'
 import { timeAgo } from 'src/utils/datetime'
 import { cn } from 'src/lib/tailwind/utils'
-import { useEvents } from 'src/pages/HomePage/hooks/useEvents'
+import { useEvents } from 'src/hooks/useEvents'
 
 interface EventContainerProps {
   event: EventOfOrganizer
@@ -68,7 +68,7 @@ export default function EventContainer({ event }: EventContainerProps) {
       </div>
       <div className='flex items-center gap-1 text-sm font-normal text-body-text-2'>
         <TimeIcon className='h-[14px] w-[14px]' />
-        <span className='min-w-[100px]'>Thời gian diễn ra: </span>
+        <span className='min-w-[120px]'>Thời gian diễn ra: </span>
         <span className='ml-1'>
           {moment(event.startAt).format(DATE_TIME_FORMATS.DATE_TIME_COMMON)} -{' '}
           {moment(event.endAt).format(DATE_TIME_FORMATS.DATE_TIME_COMMON)}
@@ -76,7 +76,7 @@ export default function EventContainer({ event }: EventContainerProps) {
       </div>
       <div className='flex items-center gap-1 text-sm font-normal text-body-text-2'>
         <DeadlineIcon className='h-[14px] w-[14px]' />
-        <span className='min-w-[100px]'>Thời gian đăng ký: </span>
+        <span className='min-w-[120px]'>Thời gian đăng ký: </span>
         <span className='ml-1'>
           {' '}
           {moment(event.startRegistrationAt).format(DATE_TIME_FORMATS.DATE_TIME_COMMON)} -{' '}

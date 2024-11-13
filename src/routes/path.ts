@@ -5,5 +5,9 @@ export const path = {
   forgotPassword: '/forgot-password',
   newsFeed: '/news-feed',
   search: '/search',
-  profile: '/profile'
+  profile: '/profile',
+  detailEvent: {
+    pattern: '/event/:id',
+    link: (id: number) => `/event/${id}`
+  }
 }
