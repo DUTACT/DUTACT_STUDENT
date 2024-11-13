@@ -18,3 +18,17 @@ export const getEvents = (options?: UseQueryOptions<EventOfOrganizer[], ApiError
     ...options
   })
 }
+
+export const getEventById = (eventId: number, options?: UseQueryOptions<EventOfOrganizer, ApiError>) => {
+  return useQuery<EventOfOrganizer, ApiError>({
+    queryKey: ['getEventById', eventId],
+    queryFn: async () => {
+      const response = await queryFetch<EventOfOrganizer>({
+        url: getEventUrl(eventId)
+      })
+      return response
+    },
+    refetchOnWindowFocus: false,
+    ...options
+  })
+}

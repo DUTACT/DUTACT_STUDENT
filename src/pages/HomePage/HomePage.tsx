@@ -1,5 +1,5 @@
 import EventContainer from 'src/components/EventContainer'
-import { useEvents } from './hooks/useEvents'
+import { useEvents } from '../../hooks/useEvents'
 
 export default function HomePage() {
   const { events } = useEvents()

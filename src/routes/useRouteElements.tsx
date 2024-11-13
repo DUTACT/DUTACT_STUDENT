@@ -11,6 +11,7 @@ import PageNotFound from 'src/pages/PageNotFound'
 import NewsFeed from 'src/pages/NewsFeed'
 import SearchPage from 'src/pages/SearchPage'
 import Profile from 'src/pages/Profile'
+import DetailEvent from 'src/pages/DetailEvent'
 
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated } = useAppContext()
@@ -34,6 +35,14 @@ export default function useRouteElements() {
           element: (
             <MainLayout>
               <HomePage />
+            </MainLayout>
+          )
+        },
+        {
+          path: path.detailEvent.pattern,
+          element: (
+            <MainLayout>
+              <DetailEvent />
             </MainLayout>
           )
         },

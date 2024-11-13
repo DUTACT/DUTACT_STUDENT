@@ -7,6 +7,7 @@ import LogOutIcon from 'src/assets/icons/i-log-out.svg?react'
 import LogOutActiveIcon from 'src/assets/icons/i-log-out-active.svg?react'
 import { useAppContext } from 'src/contexts/app.context'
 import { setupToken } from 'src/config/queryClient'
+import DutactLogo from 'src/assets/img/dutact-logo.png'
 
 export default function Sidebar() {
   const { setIsAuthenticated } = useAppContext()
@@ -20,7 +21,7 @@ export default function Sidebar() {
   return (
     <div className='fixed bottom-0 left-0 top-0 flex h-full w-sidebar flex-col items-center bg-neutral-1'>
       <div className='py-2'>
-        <img src='src/assets/img/dutact-logo.png' alt='dutact-logo' className='h-logo w-logo' />
+        <img src={DutactLogo} alt='dutact-logo' className='h-logo w-logo' />
       </div>
       <div className='flex flex-1 flex-col items-center justify-center gap-4'>
         {SIDEBAR_ROUTES.map(({ path, icon: Icon, iconActive: IconActive }) => (
