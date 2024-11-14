@@ -37,3 +37,7 @@ export const BASE_API_URL_FEEDBACK = '/api/student/feedbacks'
 export const getFeedbackUrl = (feedbackId?: number): string => {
   return feedbackId ? `${BASE_API_URL_FEEDBACK}/${feedbackId}` : BASE_API_URL_FEEDBACK
 }
+
+// newsfeed-controller
+
+export const BASE_API_URL_NEWSFEED = '/api/student/newsfeeds'
