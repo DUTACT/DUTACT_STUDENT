@@ -22,7 +22,7 @@ export const timeAgo = (dateString: string, dateFormat?: string) => {
   console.log('first', diffInSeconds)
 
   if (diffInSeconds < 60) {
-    return `${diffInSeconds} giây trước`
+    return 'vài giây trước'
   } else if (diffInSeconds < 3600) {
     const minutesAgo = now.diff(targetDate, 'minutes')
     return `${minutesAgo} phút trước`

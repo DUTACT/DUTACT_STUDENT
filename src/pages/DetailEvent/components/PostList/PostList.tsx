@@ -20,7 +20,9 @@ export default function PostList({ organizer }: PostListProps) {
     return <div>Loading...</div>
   }
 
-  if (posts) {
+  if (posts.length === 0) {
+    return <div>Chưa có bài đăng nào</div>
+  } else {
     return (
       <div className='flex flex-col gap-3'>
         {posts.map((post) => (
@@ -28,7 +30,5 @@ export default function PostList({ organizer }: PostListProps) {
         ))}
       </div>
     )
-  } else {
-    return <div>Chưa có bài đăng nào</div>
   }
 }

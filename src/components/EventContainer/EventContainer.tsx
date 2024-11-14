@@ -15,12 +15,15 @@ import DUTLogo from 'src/assets/img/dut-logo.jpg'
 import { timeAgo } from 'src/utils/datetime'
 import { cn } from 'src/lib/tailwind/utils'
 import { useEvents } from 'src/hooks/useEvents'
+import { useNavigate } from 'react-router-dom'
+import { path } from 'src/routes/path'
 
 interface EventContainerProps {
   event: EventOfOrganizer
 }
 
 export default function EventContainer({ event }: EventContainerProps) {
+  const navigate = useNavigate()
   const {
     register: { mutate: registerEvent, isPending: isRegisterPending },
     unregister: { mutate: unregisterEvent, isPending: isUnregisterPending },
@@ -58,12 +61,18 @@ export default function EventContainer({ event }: EventContainerProps) {
         </div>
         <div className='flex flex-col'>
           <div className='text-md font-semibold text-neutral-8'>{event.organizer.name}</div>
-          <div className='text-xs font-light text-neutral-6'>
+          <div
+            className='text-xs font-light text-neutral-6 hover:cursor-pointer'
+            onClick={() => navigate(path.detailEvent.link(event.id))}
+          >
             {timeAgo(event.status.moderatedAt, DATE_TIME_FORMATS.ISO)}
           </div>
         </div>
       </div>
-      <div className='text-sm font-normal text-title-text'>
+      <div
+        className='text-sm font-normal text-title-text hover:cursor-pointer'
+        onClick={() => navigate(path.detailEvent.link(event.id))}
+      >
         Sự kiện: <span className='text-sm font-semibold'>{event.name}</span>
       </div>
       <div className='flex items-center gap-1 text-sm font-normal text-body-text-2'>
