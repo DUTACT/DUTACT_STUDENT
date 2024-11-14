@@ -4,5 +4,8 @@ export const ERROR_MESSAGE = {
 }
 
 export const SUCCESS_MESSAGE = {
-  LOGIN: 'Đăng nhập thành công'
+  LOGIN: 'Đăng nhập thành công',
+  CREATE_FEEDBACK: 'Đăng cảm nghĩ thành công',
+  DELETE_FEEDBACK: 'Xóa cảm nghĩ thành công',
+  UPDATE_FEEDBACK: 'Chỉnh sửa cảm nghĩ thành công'
 }

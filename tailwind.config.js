@@ -30,18 +30,29 @@ module.exports = {
         'icon-gray': '#c2cfe0',
         overlay: 'rgba(32, 41, 57, 0.50)'
       },
-      maxWidth: {
-        page: 'var(--page)'
-      },
       width: {
         sidebar: 'var(--sidebar)',
         'logo-md': 'var(--logo-md',
         'logo-lg': 'var(--logo-lg)'
       },
+      minWidth: {
+        'logo-md': 'var(--logo-md)',
+        'logo-lg': 'var(--logo-lg)'
+      },
+      maxWidth: {
+        page: 'var(--page)',
+        popup: 'var(--max-w-popup)'
+      },
       height: {
-        'logo-md': 'var(--logo-md',
+        'logo-md': 'var(--logo-md)',
         'logo-lg': 'var(--logo-lg)',
-        'header-page': 'var(--h-header-page)'
+        'header-page': 'var(--h-header-page)',
+        'header-popup': 'var(--h-header-popup)',
+        'footer-popup': 'var(--h-footer-popup)'
+      },
+      maxHeight: {
+        popup: 'var(--max-h-popup)',
+        'main-popup': 'var(--h-main-popup)'
       },
       margin: {
         sidebar: 'var(--sidebar)'

@@ -28,7 +28,7 @@ export const getEventById = (eventId: number, options?: UseQueryOptions<EventOfO
       })
       return response
     },
-    refetchOnWindowFocus: false,
+    staleTime: options?.staleTime ?? STALE_TIME,
     ...options
   })
 }
