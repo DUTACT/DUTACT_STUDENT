@@ -3,6 +3,8 @@ import { followEvent, getEvents, registerEvent, unfollowEvent, unregisterEvent }
 import { EventOfOrganizer, FollowResponse, RegisterResponse } from 'src/types/event.type'
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { useMemo } from 'react'
+import moment from 'moment'
 
 interface EventResult {
   events: EventOfOrganizer[]
@@ -12,6 +14,8 @@ interface EventResult {
   unregister: UseMutationResult<number, ApiError, number>
   follow: UseMutationResult<FollowResponse, ApiError, number>
   unfollow: UseMutationResult<number, ApiError, number>
+  newEvents: EventOfOrganizer[]
+  upcomingEvents: EventOfOrganizer[]
 }
 
 export function useEvents(): EventResult {
@@ -24,7 +28,7 @@ export function useEvents(): EventResult {
       queryClient.setQueryData<EventOfOrganizer[]>(['getEvents'], (currentEvents) => {
         return currentEvents?.map((event) => {
           if (event.id === data.eventId) {
-            return { ...event, registeredAt: data.registeredAt }
+            return { ...event, registeredAt: data.registeredAt, registerNumber: event.registerNumber + 1 }
           }
           return event
         })
@@ -40,7 +44,7 @@ export function useEvents(): EventResult {
       queryClient.setQueryData<EventOfOrganizer[]>(['getEvents'], (currentEvents) => {
         return currentEvents?.map((event) => {
           if (event.id === eventId) {
-            return { ...event, registeredAt: null }
+            return { ...event, registeredAt: null, registerNumber: event.registerNumber - 1 }
           }
           return event
         })
@@ -60,7 +64,7 @@ export function useEvents(): EventResult {
       queryClient.setQueryData<EventOfOrganizer[]>(['getEvents'], (currentEvents) => {
         return currentEvents?.map((event) => {
           if (event.id === eventId) {
-            return { ...event, followedAt: new Date().toISOString() }
+            return { ...event, followedAt: new Date().toISOString(), followerNumber: event.followerNumber + 1 }
           }
           return event
         })
@@ -84,7 +88,7 @@ export function useEvents(): EventResult {
       queryClient.setQueryData<EventOfOrganizer[]>(['getEvents'], (currentEvents) => {
         return currentEvents?.map((event) => {
           if (event.id === eventId) {
-            return { ...event, followedAt: null }
+            return { ...event, followedAt: null, followerNumber: event.followerNumber - 1 }
           }
           return event
         })
@@ -99,6 +103,25 @@ export function useEvents(): EventResult {
     }
   })
 
+  const newEvents = useMemo(() => {
+    if (!events) return []
+    const currentDate = moment()
+    return events.filter((event) => {
+      const endRegistrationAt = moment(event.endRegistrationAt)
+      return endRegistrationAt.isAfter(currentDate)
+    })
+  }, [events])
+
+  const upcomingEvents = useMemo(() => {
+    if (!events) return []
+    const currentDate = moment()
+    const tenDaysFromNow = moment().add(10, 'days')
+    return events.filter((event) => {
+      const eventStartDate = moment(event.startAt)
+      return eventStartDate.isBetween(currentDate, tenDaysFromNow, 'days', '[]')
+    })
+  }, [events])
+
   return {
     events,
     isLoading,
@@ -106,6 +129,8 @@ export function useEvents(): EventResult {
     register,
     unregister,
     follow,
-    unfollow
+    unfollow,
+    newEvents,
+    upcomingEvents
   }
 }

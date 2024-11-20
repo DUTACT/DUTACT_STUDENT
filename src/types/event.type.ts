@@ -10,6 +10,8 @@ export interface EventOfOrganizer {
   content: string
   startAt: string
   endAt: string
+  followerNumber: number
+  registerNumber: number
   startRegistrationAt: string
   endRegistrationAt: string
   registeredAt: string | null
