@@ -1,6 +1,7 @@
 export const TIMEOUT = {
   TOAST_SHORT: 3000,
   DEBOUNCE: 500,
+  DELAY: 200,
   NAVIGATE: 1000
 }
 
