@@ -1,10 +1,7 @@
 import TimeIcon from 'src/assets/icons/i-time.svg?react'
 import DeadlineIcon from 'src/assets/icons/i-deadline.svg?react'
-import HeartIcon from 'src/assets/icons/i-heart.svg?react'
-import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import FollowIcon from 'src/assets/icons/i-follow.svg?react'
 import FollowActiveIcon from 'src/assets/icons/i-follow-active.svg?react'
-import UserAddIcon from 'src/assets/icons/i-user-add.svg?react'
 import UserAddActiveIcon from 'src/assets/icons/i-user-add-active.svg?react'
 import UserAddSecondaryIcon from 'src/assets/icons/i-user-add-secondary.svg?react'
 import UserRemoveIcon from 'src/assets/icons/i-user-remove.svg?react'
@@ -102,21 +99,17 @@ export default function EventContainer({ event }: EventContainerProps) {
       </div>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1'>
-          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
-            <HeartActiveIcon className='h-[16px] w-[16px]' />
-            <span className='select-none text-sm font-normal'>123</span>
-          </div>
           <div
             className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
             onClick={event.followedAt ? handleUnfollowEvent : handleFollowEvent}
           >
-            {event.followedAt && <FollowActiveIcon className='h-[16px] w-[16px]' />}
-            {!event.followedAt && <FollowIcon className='h-[16px] w-[16px]' />}
-            <span className='select-none text-sm font-normal'>123</span>
+            {event.followedAt && <FollowActiveIcon className='h-[16px] w-[16px] select-none' />}
+            {!event.followedAt && <FollowIcon className='h-[16px] w-[16px] select-none' />}
+            <span className='select-none text-sm font-normal'>{event.followerNumber}</span>
           </div>
           <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
-            <UserAddActiveIcon className='h-[16px] w-[16px]' />
-            <span className='select-none text-sm font-normal'>30</span>
+            <UserAddActiveIcon className='h-[16px] w-[16px] select-none' />
+            <span className='select-none text-sm font-normal'>{event.registerNumber}</span>
           </div>
         </div>
         {!isRegistrationExpired && (
