@@ -35,3 +35,8 @@ export interface FollowResponse {
   eventId: number
   followAt: string
 }
+
+export interface EventTimeFilter {
+  timeCreatedFrom: string
+  timeCreatedTo: string
+}
