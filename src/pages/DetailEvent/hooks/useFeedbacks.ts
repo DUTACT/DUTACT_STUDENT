@@ -1,6 +1,6 @@
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query'
 import { useEventId } from './useEventId'
-import { createFeedback, deleteFeedback, getFeedbacks } from 'src/apis/feedback'
+import { createFeedback, deleteFeedback, getFeedbacks, likeFeedback, unlikeFeedback } from 'src/apis/feedback'
 import { Feedback, FeedbackBody } from 'src/types/feedback.type'
 import { ApiError } from 'src/types/client.type'
 import { toast } from 'react-toastify'
@@ -12,6 +12,8 @@ interface FeedbacksResult {
   error: ApiError | null
   createFeedbackMutationResult: UseMutationResult<Feedback, ApiError, Partial<FeedbackBody>>
   deleteFeedbackMutationResult: UseMutationResult<number, ApiError, number>
+  onLikeFeedback: UseMutationResult<number, ApiError, number>
+  onUnlikeFeedback: UseMutationResult<number, ApiError, number>
 }
 
 export function useFeedbacks(): FeedbacksResult {
@@ -43,5 +45,61 @@ export function useFeedbacks(): FeedbacksResult {
     }
   })
 
-  return { feedbacks, isLoading, error, createFeedbackMutationResult, deleteFeedbackMutationResult }
+  const onLikeFeedback = likeFeedback({
+    onMutate: async (feedbackId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['getFeedbacks', { eventId }] })
+
+      const previousFeedbacks = queryClient.getQueryData<Feedback[]>(['getFeedbacks', { eventId }])
+
+      queryClient.setQueryData<Feedback[]>(['getFeedbacks', { eventId }], (currentFeedbacks) => {
+        return currentFeedbacks?.map((feedback) => {
+          if (feedback.id === feedbackId) {
+            return { ...feedback, likedAt: new Date().toISOString(), likeNumber: feedback.likeNumber + 1 }
+          }
+          return feedback
+        })
+      })
+
+      return { previousFeedbacks }
+    },
+    onError: (_error: ApiError, _eventId: number, context: { previousFeedbacks?: Feedback[] } | undefined) => {
+      if (context?.previousFeedbacks) {
+        queryClient.setQueryData(['getFeedbacks', { eventId }], context.previousFeedbacks)
+      }
+    }
+  })
+
+  const onUnlikeFeedback = unlikeFeedback({
+    onMutate: async (feedbackId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['getFeedbacks', { eventId }] })
+
+      const previousFeedbacks = queryClient.getQueryData<Feedback[]>(['getFeedbacks', { eventId }])
+
+      queryClient.setQueryData<Feedback[]>(['getFeedbacks', { eventId }], (currentFeedbacks) => {
+        return currentFeedbacks?.map((feedback) => {
+          if (feedback.id === feedbackId) {
+            return { ...feedback, likedAt: null, likeNumber: feedback.likeNumber - 1 }
+          }
+          return feedback
+        })
+      })
+
+      return { previousFeedbacks }
+    },
+    onError: (_error: ApiError, _eventId: number, context: { previousFeedbacks?: Feedback[] } | undefined) => {
+      if (context?.previousFeedbacks) {
+        queryClient.setQueryData(['getFeedbacks', { eventId }], context.previousFeedbacks)
+      }
+    }
+  })
+
+  return {
+    feedbacks,
+    isLoading,
+    error,
+    createFeedbackMutationResult,
+    deleteFeedbackMutationResult,
+    onLikeFeedback,
+    onUnlikeFeedback
+  }
 }

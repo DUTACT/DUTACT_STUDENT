@@ -5,12 +5,26 @@ import { DATE_TIME_FORMATS } from 'src/constants/common'
 import HeartIcon from 'src/assets/icons/i-heart.svg?react'
 import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import FeedbackMenu from '../FeedbackMenu'
+import { useFeedbacks } from '../../hooks/useFeedbacks'
 
 interface FeedbackContainerProps {
   feedback: Feedback
 }
 
 export default function FeedbackContainer({ feedback }: FeedbackContainerProps) {
+  const {
+    onLikeFeedback: { mutate: likeFeedback },
+    onUnlikeFeedback: { mutate: unlikeFeedback }
+  } = useFeedbacks()
+
+  const handleLikeFeedback = () => {
+    likeFeedback(feedback.id)
+  }
+
+  const handleUnlikeFeedback = () => {
+    unlikeFeedback(feedback.id)
+  }
+
   return (
     <div className='flex min-h-[100px] w-full flex-col gap-y-2 rounded-lg border border-neutral-2 bg-white p-4 shadow-sm'>
       <div className='flex w-full'>
@@ -44,9 +58,13 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
 
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1'>
-          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
-            <HeartActiveIcon className='h-[16px] w-[16px]' />
-            <span className='select-none text-sm font-normal'>123</span>
+          <div
+            className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
+            onClick={feedback.likedAt ? handleUnlikeFeedback : handleLikeFeedback}
+          >
+            {feedback.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' />}
+            {!feedback.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
+            <span className='select-none text-sm font-normal'>{feedback.likeNumber}</span>
           </div>
         </div>
       </div>
