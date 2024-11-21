@@ -3,6 +3,8 @@ export interface Post {
   content: string
   postedAt: string
   coverPhotoUrl: string
+  likeNumber: number
+  likedAt: string | null
   event: {
     id: number
     name: string
