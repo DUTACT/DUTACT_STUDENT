@@ -2,7 +2,9 @@ export interface Feedback {
   id: number
   content: string
   postedAt: string
-  coverPhotoUrl: string
+  coverPhotoUrl: string | null
+  likeNumber: number
+  likedAt: string | null
   student: {
     id: number
     fullName: string
