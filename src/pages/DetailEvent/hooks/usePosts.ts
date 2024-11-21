@@ -18,7 +18,6 @@ export function usePosts(eventId: number): PostResult {
 
   const onLikePost = likePost({
     onMutate: async (postId: number) => {
-      console.log('postId', postId)
       await queryClient.cancelQueries({ queryKey: ['getPostsOfEvent', eventId] })
 
       const previousPosts = queryClient.getQueryData<Post[]>(['getPostsOfEvent', eventId])

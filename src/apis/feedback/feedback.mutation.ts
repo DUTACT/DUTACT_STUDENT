@@ -47,3 +47,33 @@ export const editFeedback = (
     ...options
   })
 }
+
+export const likeFeedback = (
+  options?: UseMutationOptions<number, ApiError, number, { previousFeedbacks?: Feedback[] } | undefined>
+) => {
+  return useMutation<number, ApiError, number, { previousFeedbacks?: Feedback[] } | undefined>({
+    mutationFn: async (feedbackId: number) => {
+      await mutationFetch<number>({
+        url: `${getFeedbackUrl(feedbackId)}/like`,
+        method: 'POST'
+      })
+      return feedbackId
+    },
+    ...options
+  })
+}
+
+export const unlikeFeedback = (
+  options?: UseMutationOptions<number, ApiError, number, { previousFeedbacks?: Feedback[] } | undefined>
+) => {
+  return useMutation<number, ApiError, number, { previousFeedbacks?: Feedback[] } | undefined>({
+    mutationFn: async (feedbackId: number) => {
+      await mutationFetch<number>({
+        url: `${getFeedbackUrl(feedbackId)}/like`,
+        method: 'DELETE'
+      })
+      return feedbackId
+    },
+    ...options
+  })
+}

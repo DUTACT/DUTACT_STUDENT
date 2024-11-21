@@ -21,7 +21,9 @@ export function useDetailEvent(eventId: number): DetailEventResult {
   const register = registerEvent({
     onSuccess: (data: RegisterResponse) => {
       queryClient.setQueryData<EventOfOrganizer>(['getEventById', eventId], (currentEvent) => {
-        return currentEvent ? { ...currentEvent, registeredAt: data.registeredAt } : undefined
+        return currentEvent
+          ? { ...currentEvent, registeredAt: data.registeredAt, registerNumber: currentEvent.registerNumber + 1 }
+          : undefined
       })
     },
     onError: (error: ApiError) => {
@@ -32,7 +34,9 @@ export function useDetailEvent(eventId: number): DetailEventResult {
   const unregister = unregisterEvent({
     onSuccess: () => {
       queryClient.setQueryData<EventOfOrganizer>(['getEventById', eventId], (currentEvent) => {
-        return currentEvent ? { ...currentEvent, registeredAt: null } : undefined
+        return currentEvent
+          ? { ...currentEvent, registeredAt: null, registerNumber: currentEvent.registerNumber - 1 }
+          : undefined
       })
     },
     onError: (error: ApiError) => {
@@ -47,7 +51,9 @@ export function useDetailEvent(eventId: number): DetailEventResult {
       const previousEvent = queryClient.getQueryData<EventOfOrganizer>(['getEventById', eventId])
 
       queryClient.setQueryData<EventOfOrganizer>(['getEventById', eventId], (currentEvent) => {
-        return currentEvent ? { ...currentEvent, followedAt: new Date().toISOString() } : undefined
+        return currentEvent
+          ? { ...currentEvent, followedAt: new Date().toISOString(), followerNumber: currentEvent.followerNumber + 1 }
+          : undefined
       })
 
       return { previousEvents: previousEvent ? [previousEvent] : undefined }
@@ -66,7 +72,9 @@ export function useDetailEvent(eventId: number): DetailEventResult {
       const previousEvent = queryClient.getQueryData<EventOfOrganizer>(['getEventById', eventId])
 
       queryClient.setQueryData<EventOfOrganizer>(['getEventById', eventId], (currentEvent) => {
-        return currentEvent ? { ...currentEvent, followedAt: null } : undefined
+        return currentEvent
+          ? { ...currentEvent, followedAt: null, followerNumber: currentEvent.followerNumber - 1 }
+          : undefined
       })
 
       return { previousEvents: previousEvent ? [previousEvent] : undefined }

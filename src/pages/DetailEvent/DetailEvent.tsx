@@ -14,8 +14,6 @@ import { cn } from 'src/lib/tailwind/utils'
 import UserAddActiveIcon from 'src/assets/icons/i-user-add-active.svg?react'
 import UserAddSecondaryIcon from 'src/assets/icons/i-user-add-secondary.svg?react'
 import UserRemoveIcon from 'src/assets/icons/i-user-remove.svg?react'
-import HeartIcon from 'src/assets/icons/i-heart.svg?react'
-import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import FollowIcon from 'src/assets/icons/i-follow.svg?react'
 import FollowActiveIcon from 'src/assets/icons/i-follow-active.svg?react'
 
@@ -118,17 +116,13 @@ export default function DetailEvent() {
               )}
             </div>
             <div className='flex items-center gap-1'>
-              <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
-                <HeartActiveIcon className='h-[16px] w-[16px]' />
-                <span className='select-none text-sm font-normal'>123</span>
-              </div>
               <div
                 className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
                 onClick={event.followedAt ? handleUnfollowEvent : handleFollowEvent}
               >
                 {event.followedAt && <FollowActiveIcon className='h-[16px] w-[16px]' />}
                 {!event.followedAt && <FollowIcon className='h-[16px] w-[16px]' />}
-                <span className='select-none text-sm font-normal'>123</span>
+                <span className='select-none text-sm font-normal'>{event.followerNumber}</span>
               </div>
               <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
                 <UserAddActiveIcon className='h-[16px] w-[16px]' />
