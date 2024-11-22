@@ -41,3 +41,11 @@ export const getFeedbackUrl = (feedbackId?: number): string => {
 // newsfeed-controller
 
 export const BASE_API_URL_NEWSFEED = '/api/student/newsfeeds'
+
+// student-profile-controller
+
+export const BASE_API_URL_PROFILE = '/api/student/profile'
+
+export const getProfileUrl = (studentId?: number): string => {
+  return studentId ? `${BASE_API_URL_PROFILE}/${studentId}` : BASE_API_URL_PROFILE
+}
