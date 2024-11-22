@@ -2,9 +2,11 @@ import { type NewsFeedItem as NewsFeedIemType } from 'src/types/newsfeed.type'
 import DUTLogo from 'src/assets/img/dut-logo.jpg'
 import { timeAgo } from 'src/utils/datetime'
 import { DATE_TIME_FORMATS } from 'src/constants/common'
+import HeartIcon from 'src/assets/icons/i-heart.svg?react'
 import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import { useNavigate } from 'react-router-dom'
 import { path } from 'src/routes/path'
+import { useNewsFeeds } from '../../hooks/useNewsFeeds'
 
 interface NewsFeedItemProps {
   newsFeed: NewsFeedIemType
@@ -12,6 +14,19 @@ interface NewsFeedItemProps {
 
 export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
   const navigate = useNavigate()
+  const {
+    onLikeNewsFeed: { mutate: likeNewsFeed },
+    onUnlikeNewsFeed: { mutate: unlikeNewsFeed }
+  } = useNewsFeeds()
+
+  const handleLikeNewsFeed = () => {
+    likeNewsFeed({ id: newsFeed.id, type: newsFeed.type })
+  }
+
+  const handleUnlikeNewsFeed = () => {
+    unlikeNewsFeed({ id: newsFeed.id, type: newsFeed.type })
+  }
+
   return (
     <div className='flex min-h-[100px] w-full flex-col gap-y-2 rounded-lg border border-neutral-2 bg-white p-4 shadow-sm'>
       <div className='flex w-full gap-x-2'>
@@ -49,9 +64,13 @@ export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
       )}
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1'>
-          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
-            <HeartActiveIcon className='h-[16px] w-[16px]' />
-            <span className='select-none text-sm font-normal'>123</span>
+          <div
+            className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
+            onClick={newsFeed.likedAt ? handleUnlikeNewsFeed : handleLikeNewsFeed}
+          >
+            {newsFeed.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' />}
+            {!newsFeed.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
+            <span className='select-none text-sm font-normal'>{newsFeed.likedNumber}</span>
           </div>
         </div>
       </div>

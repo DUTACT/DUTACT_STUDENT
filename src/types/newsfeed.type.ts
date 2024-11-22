@@ -7,7 +7,9 @@ type BaseNewsFeed = {
   id: number
   content: string
   postedAt: string
-  coverPhotoUrl: string
+  coverPhotoUrl: string | null
+  likedNumber: number
+  likedAt: string | null
 }
 
 type FeedbackInNewsFeed = BaseNewsFeed & {
