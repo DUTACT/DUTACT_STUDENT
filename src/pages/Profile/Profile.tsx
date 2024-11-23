@@ -1,12 +1,17 @@
 import { useProfile } from 'src/hooks/useProfile'
-import DUTLogo from 'src/assets/img/dut-logo.jpg'
 import TelephoneIcon from 'src/assets/icons/i-telephone.svg?react'
 import AddressIcon from 'src/assets/icons/i-address-card.svg?react'
 import FacultyIcon from 'src/assets/icons/i-faculty.svg?react'
 import ClassIcon from 'src/assets/icons/i-class.svg?react'
+import Avatar from './components/Avatar'
+import Button from 'src/components/Button'
+import UpdateProfilePopup from './components/UpdateProfilePopup'
+import { useState } from 'react'
 
 export default function Profile() {
   const { profile } = useProfile()
+
+  const [isShowUpdateProfilePopup, setIsShowUpdateProfilePopup] = useState<boolean>(false)
 
   return (
     <div className='relative flex h-full w-full max-w-page flex-col items-center bg-neutral-1'>
@@ -42,16 +47,24 @@ export default function Profile() {
                 <span className='text-sm font-normal text-neutral-6'>{profile.phone}</span>
               </div>
             )}
+            <div className='mt-4 flex items-center gap-2'>
+              <Button
+                title='Cập nhật thông tin'
+                classButton='bg-neutral-0 hover:bg-neutral-1 border border-neutral-5 hover:border-neutral-5 max-w-[150px] px-2 py-1'
+                classTitle='text-sm font-medium'
+                onClick={() => setIsShowUpdateProfilePopup(true)}
+              />
+              <Button
+                title='Đổi mật khẩu'
+                classButton='bg-neutral-0 hover:bg-neutral-1 border border-neutral-5 hover:border-neutral-5 max-w-[150px] px-2 py-1'
+                classTitle='text-sm font-medium'
+              />
+            </div>
           </div>
-          <div className='relative h-[120px] w-[120px] rounded-full border-[2px] border-neutral-4'>
-            <img
-              className='absolute left-0 top-0 mx-auto h-full w-full rounded-full border-[1px] border-gray-200 object-cover'
-              src={profile?.avatarUrl || DUTLogo}
-              alt='dut-logo'
-            />
-          </div>
+          <Avatar avatarUrl={profile?.avatarUrl} />
         </div>
       </main>
+      {isShowUpdateProfilePopup && <UpdateProfilePopup setIsShowUpdateProfilePopup={setIsShowUpdateProfilePopup} />}
     </div>
   )
 }

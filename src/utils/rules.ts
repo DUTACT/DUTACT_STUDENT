@@ -1,11 +1,13 @@
 import {
   ERROR_INCORRECT_FORMAT_PASSWORD,
+  ERROR_INVALID_PHONE,
   ERROR_MAX_LENGTH_PASSWORD,
   ERROR_MAX_LENGTH_USERNAME,
   ERROR_MIN_LENGTH_PASSWORD,
   ERROR_MIN_LENGTH_USERNAME,
   ERROR_PASSWORD_NOT_MATCHED,
   ERROR_REQUIRED_CONFIRM_PASSWORD,
+  ERROR_REQUIRED_FIELD,
   ERROR_REQUIRED_NAME,
   ERROR_REQUIRED_PASSWORD,
   ERROR_REQUIRED_USERNAME,
@@ -13,7 +15,8 @@ import {
   MAX_LENGTH_USERNAME,
   MIN_LENGTH_PASSWORD,
   MIN_LENGTH_USERNAME,
-  REGEX_PASSWORD
+  REGEX_PASSWORD,
+  REGEX_PHONE
 } from 'src/constants/validate'
 import * as yup from 'yup'
 
@@ -42,4 +45,13 @@ export const authenSchema = yup.object({
   name: yup.string().required(ERROR_REQUIRED_NAME)
 })
 
+export const profileSchema = yup.object({
+  fullName: yup.string().trim().required(ERROR_REQUIRED_FIELD),
+  phone: yup.string().trim().required(ERROR_REQUIRED_FIELD).matches(REGEX_PHONE, ERROR_INVALID_PHONE).nullable(),
+  address: yup.string().nullable(),
+  faculty: yup.string().nullable(),
+  className: yup.string().nullable()
+})
+
 export type AuthenSchemaType = yup.InferType<typeof authenSchema>
+export type ProfileSchemaType = yup.InferType<typeof profileSchema>

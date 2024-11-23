@@ -1,3 +1,5 @@
+export const ERROR_REQUIRED_FIELD = 'Không được bỏ trống trường này'
+
 // USERNAME
 export const ERROR_REQUIRED_USERNAME = 'Email sinh viên là bắt buộc'
 export const MAX_LENGTH_USERNAME = 255
@@ -22,3 +24,7 @@ export const ERROR_PASSWORD_NOT_MATCHED = 'Nhập lại mật khẩu không kh�
 
 // NAME
 export const ERROR_REQUIRED_NAME = 'Tên là bắt buộc'
+
+// PHONE
+export const REGEX_PHONE = /(?:\+84|0084|0)[235789][0-9]{1,2}[0-9]{7}(?:[^\d]+|$)/g
+export const ERROR_INVALID_PHONE = 'Số điện thoại không hợp lệ'
