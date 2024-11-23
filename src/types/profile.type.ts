@@ -7,3 +7,5 @@ export interface StudentProfile {
   address: string | null
   className: string | null
 }
+
+export type UpdateStudentProfileBody = Omit<StudentProfile, 'avatarUrl'> | { avatar: File }
