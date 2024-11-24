@@ -9,3 +9,8 @@ export interface StudentProfile {
 }
 
 export type UpdateStudentProfileBody = Omit<StudentProfile, 'avatarUrl'> | { avatar: File }
+
+export interface ChangePasswordBody {
+  oldPassword: string
+  newPassword: string
+}
