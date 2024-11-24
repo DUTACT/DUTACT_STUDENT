@@ -7,11 +7,13 @@ import Avatar from './components/Avatar'
 import Button from 'src/components/Button'
 import UpdateProfilePopup from './components/UpdateProfilePopup'
 import { useState } from 'react'
+import ChangePasswordPopup from './components/ChangePasswordPopup'
 
 export default function Profile() {
   const { profile } = useProfile()
 
   const [isShowUpdateProfilePopup, setIsShowUpdateProfilePopup] = useState<boolean>(false)
+  const [isShowChangePasswordPopup, setIsShowChangePasswordPopup] = useState<boolean>(false)
 
   return (
     <div className='relative flex h-full w-full max-w-page flex-col items-center bg-neutral-1'>
@@ -58,6 +60,7 @@ export default function Profile() {
                 title='Đổi mật khẩu'
                 classButton='bg-neutral-0 hover:bg-neutral-1 border border-neutral-5 hover:border-neutral-5 max-w-[150px] px-2 py-1'
                 classTitle='text-sm font-medium'
+                onClick={() => setIsShowChangePasswordPopup(true)}
               />
             </div>
           </div>
@@ -65,6 +68,7 @@ export default function Profile() {
         </div>
       </main>
       {isShowUpdateProfilePopup && <UpdateProfilePopup setIsShowUpdateProfilePopup={setIsShowUpdateProfilePopup} />}
+      {isShowChangePasswordPopup && <ChangePasswordPopup setIsShowChangePasswordPopup={setIsShowChangePasswordPopup} />}
     </div>
   )
 }
