@@ -72,3 +72,41 @@ export const getRegisteredEvents = (
     }
   })
 }
+
+export const getFollowedEvents = (
+  options?: UseInfiniteQueryOptions<PageInfo<RegisteredEvent>, ApiError, PageInfo<RegisteredEvent>>
+) => {
+  return useInfiniteQuery<PageInfo<RegisteredEvent>, ApiError>({
+    queryKey: ['getFollowedEvents'],
+    queryFn: async ({ pageParam }) => {
+      const response = await queryFetch<PageInfo<RegisteredEvent>>({
+        url: `${getEventUrl()}/followed`,
+        inputParams: {
+          page: pageParam,
+          pageSize: DEFAULT_PAGE_SIZE
+        }
+      })
+
+      return response
+    },
+    getNextPageParam: (lastPage) => {
+      const { currentPage, totalPage } = lastPage.pagination
+      return currentPage < totalPage ? currentPage + 1 : undefined
+    },
+    initialPageParam: DEFAULT_PAGE_NUMBER,
+    ...{
+      ...options,
+      select: (data) => ({
+        ...data,
+        pages: data.pages.map((page) => ({
+          ...page,
+          data: page.data.map((followedEvent) => ({
+            ...followedEvent,
+            tags: generateRegisteredEventTags(followedEvent)
+          }))
+        })),
+        pageParams: data.pageParams || []
+      })
+    }
+  })
+}
