@@ -18,10 +18,10 @@ export default function FilterPopover({ content }: Props) {
     modifiers: [
       { name: 'offset', options: { offset: [0, 8] } },
       {
-        name: 'preventOverflow', // Đảm bảo popper không vượt ra khỏi viewport
+        name: 'preventOverflow',
         options: {
           boundary: 'clippingParents',
-          padding: 8 // Tạo padding từ lề
+          padding: 8
         }
       }
     ]

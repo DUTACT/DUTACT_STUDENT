@@ -8,12 +8,31 @@ import Button from 'src/components/Button'
 import UpdateProfilePopup from './components/UpdateProfilePopup'
 import { useState } from 'react'
 import ChangePasswordPopup from './components/ChangePasswordPopup'
+import RegisteredEvents from './components/RegisteredEvents'
+import FollowedEvents from './components/FollowedEvents'
+import ActivityProofs from './components/ActivityProofs'
+import { cn } from 'src/lib/tailwind/utils'
+
+interface Tab {
+  id: string
+  label: string
+  component: React.ComponentType
+}
+
+const TABS: Tab[] = [
+  { id: 'registeredEvents', label: 'Sự kiện đã đăng ký', component: RegisteredEvents },
+  { id: 'followedEvents', label: 'Sự kiện đã theo dõi', component: FollowedEvents },
+  { id: 'activityProofs', label: 'Minh chứng hoạt động', component: ActivityProofs }
+]
 
 export default function Profile() {
-  const { profile } = useProfile()
-
   const [isShowUpdateProfilePopup, setIsShowUpdateProfilePopup] = useState<boolean>(false)
   const [isShowChangePasswordPopup, setIsShowChangePasswordPopup] = useState<boolean>(false)
+  const [activeTab, setActiveTab] = useState<string>('registeredEvents')
+
+  const { profile } = useProfile()
+
+  const ActiveComponent = TABS.find((tab) => tab.id === activeTab)?.component
 
   return (
     <div className='relative flex h-full w-full max-w-page flex-col items-center bg-neutral-1'>
@@ -23,7 +42,7 @@ export default function Profile() {
       <main className='flex w-full flex-grow flex-col gap-4 rounded-xl border border-neutral-3 bg-neutral-0 p-6 shadow-sm'>
         <div className='flex items-start gap-3'>
           <div className='flex flex-1 flex-col'>
-            <div className='text-xl font-medium text-neutral-7'>{profile?.fullName}</div>
+            <div className='text-xl font-medium text-neutral-7'>{profile?.name}</div>
             <div className='mb-3 mt-1 text-sm font-light text-neutral-5'>{profile?.studentEmail}</div>
             {profile?.faculty && (
               <div className='mt-[6px] flex items-center gap-2'>
@@ -66,6 +85,24 @@ export default function Profile() {
           </div>
           <Avatar avatarUrl={profile?.avatarUrl} />
         </div>
+        <div className='mt-4 flex w-full flex-col gap-3'>
+          <nav className='flex w-full gap-0 border-b-[1px]'>
+            {TABS.map((tab) => (
+              <div
+                key={tab.id}
+                className={cn('flex-1 p-3 text-center text-sm', {
+                  'border-b-2 border-semantic-secondary font-medium text-semantic-secondary hover:cursor-default':
+                    tab.id === activeTab,
+                  'font-normal text-neutral-7 hover:cursor-pointer': tab.id !== activeTab
+                })}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </div>
+            ))}
+          </nav>
+        </div>
+        {ActiveComponent && <ActiveComponent />}
       </main>
       {isShowUpdateProfilePopup && <UpdateProfilePopup setIsShowUpdateProfilePopup={setIsShowUpdateProfilePopup} />}
       {isShowChangePasswordPopup && <ChangePasswordPopup setIsShowChangePasswordPopup={setIsShowChangePasswordPopup} />}

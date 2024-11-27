@@ -54,7 +54,7 @@ export function useFeedbacks(): FeedbacksResult {
       queryClient.setQueryData<Feedback[]>(['getFeedbacks', { eventId }], (currentFeedbacks) => {
         return currentFeedbacks?.map((feedback) => {
           if (feedback.id === feedbackId) {
-            return { ...feedback, likedAt: new Date().toISOString(), likeNumber: feedback.likeNumber + 1 }
+            return { ...feedback, likedAt: new Date().toISOString(), likedNumber: feedback.likedNumber + 1 }
           }
           return feedback
         })
@@ -78,7 +78,7 @@ export function useFeedbacks(): FeedbacksResult {
       queryClient.setQueryData<Feedback[]>(['getFeedbacks', { eventId }], (currentFeedbacks) => {
         return currentFeedbacks?.map((feedback) => {
           if (feedback.id === feedbackId) {
-            return { ...feedback, likedAt: null, likeNumber: feedback.likeNumber - 1 }
+            return { ...feedback, likedAt: null, likedNumber: feedback.likedNumber - 1 }
           }
           return feedback
         })

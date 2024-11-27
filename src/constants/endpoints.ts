@@ -49,3 +49,11 @@ export const BASE_API_URL_PROFILE = '/api/student/profile'
 export const getProfileUrl = (studentId?: number): string => {
   return studentId ? `${BASE_API_URL_PROFILE}/${studentId}` : BASE_API_URL_PROFILE
 }
+
+// event-check-in-controller
+
+export const BASE_API_URL_EVENT_CHECK_IN = '/api/event-check-in'
+
+export const getEventCheckInUrl = (eventId?: number): string => {
+  return eventId ? `${BASE_API_URL_EVENT_CHECK_IN}/${eventId}` : BASE_API_URL_EVENT_CHECK_IN
+}

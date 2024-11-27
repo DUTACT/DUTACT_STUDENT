@@ -3,11 +3,11 @@ export interface Feedback {
   content: string
   postedAt: string
   coverPhotoUrl: string | null
-  likeNumber: number
+  likedNumber: number
   likedAt: string | null
   student: {
     id: number
-    fullName: string
+    name: string
     avatarUrl: string
   }
   event: {

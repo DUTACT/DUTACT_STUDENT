@@ -37,7 +37,7 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
             />
           </div>
           <div className='flex flex-col'>
-            <div className='text-md font-semibold text-neutral-8'>{feedback.student.fullName}</div>
+            <div className='text-md font-semibold text-neutral-8'>{feedback.student.name}</div>
             <div className='text-xs font-light text-neutral-6'>{timeAgo(feedback.postedAt, DATE_TIME_FORMATS.ISO)}</div>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
           >
             {feedback.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' />}
             {!feedback.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
-            <span className='select-none text-sm font-normal'>{feedback.likeNumber}</span>
+            <span className='select-none text-sm font-normal'>{feedback.likedNumber}</span>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { TabProps } from '../Tab/Tab'
 import { cn } from 'src/lib/tailwind/utils'
 
@@ -8,18 +8,36 @@ interface TabsProps {
 
 export default function Tabs({ children }: TabsProps) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const tabsRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const tabsContainer = tabsRef.current
+    if (tabsContainer) {
+      const activeTab = tabsContainer.children[activeIndex] as HTMLElement
+      const offsetLeft = activeTab.offsetLeft
+      const tabWidth = activeTab.offsetWidth
+      const containerWidth = tabsContainer.offsetWidth
+
+      const centerPosition = offsetLeft - (containerWidth - tabWidth) / 2
+
+      tabsContainer.scrollTo({
+        left: centerPosition,
+        behavior: 'smooth'
+      })
+    }
+  }, [activeIndex])
 
   return (
     <div>
-      <div className='flex border-b border-neutral-4'>
+      <div ref={tabsRef} className='scrollbar-none flex overflow-auto scroll-smooth border-b border-neutral-4'>
         {children.map((tab, index) => (
           <div
             key={index}
             className={cn(
-              'cursor-pointer px-4 py-2 font-medium focus:outline-none',
+              'min-w-fit cursor-pointer px-4 py-2 text-sm focus:outline-none',
               index === activeIndex
-                ? 'border-b-2 border-semantic-secondary/80 text-semantic-secondary/80'
-                : 'text-neutral-5 hover:text-neutral-6'
+                ? 'border-b-2 border-semantic-secondary/80 font-medium text-semantic-secondary/80'
+                : 'font-normal text-neutral-5 hover:text-neutral-6'
             )}
             onClick={() => setActiveIndex(index)}
           >
