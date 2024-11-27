@@ -31,7 +31,7 @@ export default function UpdateProfilePopup({ setIsShowUpdateProfilePopup }: Upda
     defaultValues: {
       address: profile?.address ?? '',
       phone: profile?.phone ?? '',
-      fullName: profile?.fullName ?? '',
+      name: profile?.name ?? '',
       faculty: profile?.faculty ?? '',
       className: profile?.className ?? ''
     }
@@ -81,7 +81,7 @@ export default function UpdateProfilePopup({ setIsShowUpdateProfilePopup }: Upda
         <Divider />
         <div className='block max-h-main-popup overflow-auto px-6 py-4'>
           <Input
-            name='fullName'
+            name='name'
             control={control}
             type='text'
             placeholder='Nhập tên của bạn'

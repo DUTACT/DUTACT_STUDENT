@@ -16,3 +16,6 @@ export const DATE_TIME_FORMATS = {
   DATE_TIME_COMMON: 'HH:mm  DD/MM/YYYY',
   DATE_TIME_LOCAL: 'YYYY-MM-DDTHH:mm'
 }
+
+export const DEFAULT_PAGE_NUMBER = 1
+export const DEFAULT_PAGE_SIZE = 10

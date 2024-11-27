@@ -1,6 +1,6 @@
 export interface StudentProfile {
   studentEmail: string
-  fullName: string
+  name: string
   phone: string | null
   faculty: string | null
   avatarUrl: string | null

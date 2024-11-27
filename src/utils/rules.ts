@@ -47,7 +47,7 @@ export const authenSchema = yup.object({
 })
 
 export const profileSchema = yup.object({
-  fullName: yup.string().trim().required(ERROR_REQUIRED_FIELD),
+  name: yup.string().trim().required(ERROR_REQUIRED_FIELD),
   phone: yup.string().trim().required(ERROR_REQUIRED_FIELD).matches(REGEX_PHONE, ERROR_INVALID_PHONE).nullable(),
   address: yup.string().nullable(),
   faculty: yup.string().nullable(),

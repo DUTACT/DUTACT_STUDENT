@@ -1,3 +1,7 @@
+import { REGISTERED_EVENT_TAGS } from 'src/constants/event'
+import { CertificateStatusOfEvent } from './certificate.type'
+import { CheckInInformation } from './eventCheckIn'
+
 export interface OrganizerInformation {
   id: number
   name: string
@@ -39,4 +43,15 @@ export interface FollowResponse {
 export interface EventTimeFilter {
   timeCreatedFrom: string
   timeCreatedTo: string
+}
+
+export type RegisteredEventTag = (typeof REGISTERED_EVENT_TAGS)[number]
+
+export interface RegisteredEvent {
+  studentId: string
+  event: EventOfOrganizer
+  totalCheckIn: number
+  certificateStatus: CertificateStatusOfEvent | null
+  checkIns: CheckInInformation[]
+  tags: RegisteredEventTag[]
 }

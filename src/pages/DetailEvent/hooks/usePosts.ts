@@ -25,7 +25,7 @@ export function usePosts(eventId: number): PostResult {
       queryClient.setQueryData<Post[]>(['getPostsOfEvent', eventId], (currentPosts) => {
         return currentPosts?.map((post) => {
           if (post.id === postId) {
-            return { ...post, likedAt: new Date().toISOString(), likeNumber: post.likeNumber + 1 }
+            return { ...post, likedAt: new Date().toISOString(), likedNumber: post.likedNumber + 1 }
           }
           return post
         })
@@ -49,7 +49,7 @@ export function usePosts(eventId: number): PostResult {
       queryClient.setQueryData<Post[]>(['getPostsOfEvent', eventId], (currentPosts) => {
         return currentPosts?.map((post) => {
           if (post.id === postId) {
-            return { ...post, likedAt: null, likeNumber: post.likeNumber - 1 }
+            return { ...post, likedAt: null, likedNumber: post.likedNumber - 1 }
           }
           return post
         })

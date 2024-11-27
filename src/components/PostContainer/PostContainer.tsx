@@ -58,7 +58,7 @@ export default function PostContainer({ post, organizer }: PostContainerProps) {
           >
             {post.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' />}
             {!post.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
-            <span className='select-none text-sm font-normal'>{post.likeNumber}</span>
+            <span className='select-none text-sm font-normal'>{post.likedNumber}</span>
           </div>
         </div>
       </div>
