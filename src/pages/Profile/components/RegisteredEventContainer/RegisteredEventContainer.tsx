@@ -15,11 +15,16 @@ import CheckInHistoryPopup from '../CheckInHistoryPopup/CheckInHistoryPopup'
 import RejectedReasonPopup from '../RejectedReasonPopup'
 
 interface RegisteredEventContainerProps {
+  isFollowedEvent?: boolean
   registeredEvent: RegisteredEvent
 }
 
-export default function RegisteredEventContainer({ registeredEvent }: RegisteredEventContainerProps) {
+export default function RegisteredEventContainer({
+  isFollowedEvent = false,
+  registeredEvent
+}: RegisteredEventContainerProps) {
   const navigate = useNavigate()
+
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false)
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null)
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null)
@@ -80,44 +85,48 @@ export default function RegisteredEventContainer({ registeredEvent }: Registered
       className='group relative h-full overflow-hidden rounded-lg border border-neutral-3 shadow-custom hover:cursor-pointer'
       onClick={() => navigate(path.detailEvent.link(registeredEvent.event.id))}
     >
-      <div
-        className='absolute right-2 top-2 z-10 rounded-full bg-neutral-9/80 p-2'
-        onClick={(e) => {
-          e.stopPropagation()
-          setIsPopoverOpen((prev) => !prev)
-        }}
-        ref={moreIconRef}
-      >
-        <MoreIcon className='h-[16px] w-[16px]' />
-      </div>
+      {!isFollowedEvent && (
+        <>
+          <div
+            className='absolute right-2 top-2 z-10 rounded-full bg-neutral-9/80 p-2'
+            onClick={(e) => {
+              e.stopPropagation()
+              setIsPopoverOpen((prev) => !prev)
+            }}
+            ref={moreIconRef}
+          >
+            <MoreIcon className='h-[16px] w-[16px]' />
+          </div>
 
-      {isPopoverOpen && (
-        <div
-          ref={popoverRef}
-          style={{
-            ...styles.popper,
-            zIndex: 9999,
-            position: 'absolute',
-            top: '2rem',
-            left: undefined,
-            right: '1rem',
-            width: 'fit-content'
-          }}
-          {...attributes.popper}
-        >
-          <RegisteredEventPopover
-            tags={registeredEvent.tags}
-            onClosePopover={onClosePopover}
-            setIsShowCheckInHistory={setIsShowCheckInHistory}
-            setIsShowRejectedReason={setIsShowRejectedReason}
-          />
-        </div>
+          {isPopoverOpen && (
+            <div
+              ref={popoverRef}
+              style={{
+                ...styles.popper,
+                zIndex: 9999,
+                position: 'absolute',
+                top: '2rem',
+                left: undefined,
+                right: '1rem',
+                width: 'fit-content'
+              }}
+              {...attributes.popper}
+            >
+              <RegisteredEventPopover
+                tags={registeredEvent.tags}
+                onClosePopover={onClosePopover}
+                setIsShowCheckInHistory={setIsShowCheckInHistory}
+                setIsShowRejectedReason={setIsShowRejectedReason}
+              />
+            </div>
+          )}
+        </>
       )}
 
       <div className='aspect-h-3 aspect-w-8 w-full'>
         <img src={registeredEvent.event.coverPhotoUrl} alt='ảnh sự kiện' className='object-cover' />
       </div>
-      <div className='flex flex-col gap-1 bg-neutral-0 px-4 py-2 group-hover:bg-neutral-2'>
+      <div className='flex h-full flex-col gap-1 bg-neutral-0 px-4 py-2 group-hover:bg-neutral-2'>
         <div className='flex flex-wrap items-center gap-2'>
           {registeredEvent.tags.map((tag) => (
             <Tag

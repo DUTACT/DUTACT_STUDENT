@@ -8,14 +8,14 @@ export const generateRegisteredEventTags = (registeredEvent: RegisteredEvent): R
   const endAt = moment(registeredEvent.event.endAt)
 
   if (startAt.isAfter(now)) {
-    tags.push('notParticipated')
+    tags.push('notStarted')
   }
 
   if (startAt.isSameOrBefore(now) && endAt.isSameOrAfter(now)) {
     tags.push('onGoing')
   }
 
-  if (registeredEvent.certificateStatus?.type === 'pending') {
+  if (!startAt.isAfter(now) && registeredEvent.certificateStatus?.type === 'pending') {
     tags.push('pending')
   }
 

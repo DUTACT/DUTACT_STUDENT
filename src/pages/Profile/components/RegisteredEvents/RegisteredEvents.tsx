@@ -29,7 +29,7 @@ export default function RegisteredEvents() {
   if (error) return <div>Error: {error.message}</div>
 
   return (
-    <div className=''>
+    <>
       <Tabs>
         {REGISTERED_EVENT_TAGS.map((tag) => (
           <Tab key={tag} label={REGISTERED_EVENT_TAG_LABEL[tag]}>
@@ -43,9 +43,7 @@ export default function RegisteredEvents() {
               {registeredEventsByFilter(tag).length === 0 && (
                 <div className='flex w-full flex-col items-center gap-2'>
                   <img src={NoData} alt='no-data' className='h-[100px] w-[100px]' />
-                  <div className='text-sm font-medium text-neutral-6'>
-                    Không có sự kiện nào <span className='lowercase'>{REGISTERED_EVENT_TAG_LABEL[tag]}</span>
-                  </div>
+                  <div className='text-sm font-medium text-neutral-6'>Không tìm thấy sự kiện nào</div>
                 </div>
               )}
             </div>
@@ -55,6 +53,6 @@ export default function RegisteredEvents() {
       <div ref={scrollRef} className='h-[1px] w-full' />
 
       {isFetchingNextPage && <div>Loading more...</div>}
-    </div>
+    </>
   )
 }

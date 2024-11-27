@@ -126,7 +126,7 @@ export default function DetailEvent() {
               </div>
               <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
                 <UserAddActiveIcon className='h-[16px] w-[16px]' />
-                <span className='select-none text-sm font-normal'>30</span>
+                <span className='select-none text-sm font-normal'>{event.registerNumber}</span>
               </div>
             </div>
             <div className='mt-2 flex items-center'>
