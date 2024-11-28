@@ -140,7 +140,7 @@ export default function CreateOrUpdateFeedbackPopup({
                 control={control}
                 showIsRequired={false}
                 classNameWrapper='text-sm w-full flex-1'
-                initialImageUrl={feedback?.coverPhotoUrl}
+                initialImageUrl={feedback?.coverPhotoUrl || undefined}
                 removedInitialImage={removedCoverPhoto}
                 setRemovedInitialImage={setRemovedCoverPhoto}
               />
