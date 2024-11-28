@@ -1,5 +1,7 @@
 export const ERROR_MESSAGE = {
   invalid_credentials: 'Email sinh viên hoặc mật khẩu không đúng',
+  forbidden: 'Bạn không được phép truy cập trang này',
+  payload_too_large: 'Nội dung tải lên của bạn có dung lượng quá lớn',
   UNEXPECTED_ERROR: 'An unexpected error occurred',
   INVALID_PASSWORD: 'Mật khẩu hiện tại không đúng'
 }
