@@ -57,3 +57,7 @@ export const BASE_API_URL_EVENT_CHECK_IN = '/api/event-check-in'
 export const getEventCheckInUrl = (eventId?: number): string => {
   return eventId ? `${BASE_API_URL_EVENT_CHECK_IN}/${eventId}` : BASE_API_URL_EVENT_CHECK_IN
 }
+
+// student-activity-controller
+
+export const BASE_API_URL_ACTIVITY = '/api/student/activities'
