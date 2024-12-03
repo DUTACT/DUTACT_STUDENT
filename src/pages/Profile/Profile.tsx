@@ -3,6 +3,7 @@ import TelephoneIcon from 'src/assets/icons/i-telephone.svg?react'
 import AddressIcon from 'src/assets/icons/i-address-card.svg?react'
 import FacultyIcon from 'src/assets/icons/i-faculty.svg?react'
 import ClassIcon from 'src/assets/icons/i-class.svg?react'
+import RewindTime from 'src/assets/icons/i-rewind-time.svg?react'
 import Avatar from './components/Avatar'
 import Button from 'src/components/Button'
 import UpdateProfilePopup from './components/UpdateProfilePopup'
@@ -12,6 +13,7 @@ import RegisteredEvents from './components/RegisteredEvents'
 import FollowedEvents from './components/FollowedEvents'
 import ActivityProofs from './components/ActivityProofs'
 import { cn } from 'src/lib/tailwind/utils'
+import ActivityHistoryPopup from './components/ActivityHistoryPopup/ActivityHistoryPopup'
 
 interface Tab {
   id: string
@@ -28,6 +30,7 @@ const TABS: Tab[] = [
 export default function Profile() {
   const [isShowUpdateProfilePopup, setIsShowUpdateProfilePopup] = useState<boolean>(false)
   const [isShowChangePasswordPopup, setIsShowChangePasswordPopup] = useState<boolean>(false)
+  const [isShowActivityHistoryPopup, setIsShowActivityHistoryPopup] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<string>('registeredEvents')
 
   const { profile } = useProfile()
@@ -82,10 +85,17 @@ export default function Profile() {
                 onClick={() => setIsShowChangePasswordPopup(true)}
               />
             </div>
+            <div
+              className='group mt-4 flex items-center gap-1 text-sm text-neutral-6 hover:cursor-pointer hover:opacity-80'
+              onClick={() => setIsShowActivityHistoryPopup(true)}
+            >
+              <RewindTime className='h-[20px] w-[20px]' />
+              <div>Xem lịch sử hoạt động</div>
+            </div>
           </div>
           <Avatar avatarUrl={profile?.avatarUrl} />
         </div>
-        <div className='mt-4 flex w-full flex-col gap-3'>
+        <div className='mt-2 flex w-full flex-col gap-3'>
           <nav className='flex w-full gap-0 border-b-[1px]'>
             {TABS.map((tab) => (
               <div
@@ -106,6 +116,9 @@ export default function Profile() {
       </main>
       {isShowUpdateProfilePopup && <UpdateProfilePopup setIsShowUpdateProfilePopup={setIsShowUpdateProfilePopup} />}
       {isShowChangePasswordPopup && <ChangePasswordPopup setIsShowChangePasswordPopup={setIsShowChangePasswordPopup} />}
+      {isShowActivityHistoryPopup && (
+        <ActivityHistoryPopup setIsShowActivityHistoryPopup={setIsShowActivityHistoryPopup} />
+      )}
     </div>
   )
 }
