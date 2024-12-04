@@ -57,7 +57,7 @@ export default function Select<
         field: {
           value: value?.toString() || ''
         },
-        fieldState: {}
+        fieldState: { error: undefined }
       }
 
   const [localValue, setLocalValue] = useState<string>(field.value || '')
