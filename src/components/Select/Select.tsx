@@ -38,7 +38,7 @@ export default function Select<
     classNameOption = '',
     classNameError,
     showError,
-    value,
+    value = '',
     control,
     name,
     rules,
