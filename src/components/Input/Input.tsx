@@ -58,7 +58,7 @@ export default function Input<
         field: {
           value: value?.toString() || ''
         },
-        fieldState: {}
+        fieldState: { error: undefined }
       }
 
   const [localValue, setLocalValue] = useState<string>(field.value || '')

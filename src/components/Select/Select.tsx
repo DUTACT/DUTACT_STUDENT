@@ -19,9 +19,10 @@ export type Props<
   labelName?: string
   showIsRequired?: boolean
   showError?: boolean
-  name?: FieldPath<TFieldValues>
+  name: FieldPath<TFieldValues>
   options: OptionSelect[]
   placeholder?: string
+  value?: string
 } & SelectHTMLAttributes<HTMLSelectElement> &
   Partial<UseControllerProps<TFieldValues, TName>>
 
@@ -57,7 +58,7 @@ export default function Select<
         field: {
           value: value?.toString() || ''
         },
-        fieldState: {}
+        fieldState: { error: undefined }
       }
 
   const [localValue, setLocalValue] = useState<string>(field.value || '')
