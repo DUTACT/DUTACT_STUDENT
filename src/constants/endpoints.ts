@@ -1,7 +1,7 @@
 const BASE_URL = '/api/student'
 
 export const getUrl = (url: string) => {
-  return `${BASE_URL}${url}`
+  return `${BASE_URL}/${url}`
 }
 
 // student-auth-controller

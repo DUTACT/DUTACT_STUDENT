@@ -6,3 +6,9 @@ export interface AuthBody {
 export interface AuthResponse {
   accessToken: string
 }
+
+export interface RegisterBody {
+  fullName: string
+  email: string
+  password: string
+}

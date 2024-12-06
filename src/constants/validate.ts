@@ -7,7 +7,7 @@ export const MIN_LENGTH_USERNAME = 8
 export const REGEX_USERNAME = /^[a-zA-Z0-9._%+-]+@sv1\.dut\.udn\.vn$/
 export const ERROR_MAX_LENGTH_USERNAME = `Email sinh viên chỉ có tối đa ${MAX_LENGTH_USERNAME} ký tự`
 export const ERROR_MIN_LENGTH_USERNAME = `Email sinh viên phải có tối thiểu ${MIN_LENGTH_USERNAME} ký tự`
-export const ERROR_REGEX_USERNAME = 'Email sinh viên phải có đuôi là @sv1.dut.udn.vn'
+export const ERROR_REGEX_USERNAME = 'Email sinh viên phải do Trường Đại học Bách khoa Đà Nẵng cung cấp'
 // PASSWORD
 export const MAX_LENGTH_PASSWORD = 128
 export const MIN_LENGTH_PASSWORD = 8
