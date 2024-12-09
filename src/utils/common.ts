@@ -12,3 +12,9 @@ export const getDefaultImageFile = () => {
   const blob = new Blob([defaultImageData], { type: 'image/jpeg' })
   return new File([blob], 'default-image.jpg', { type: 'image/jpeg' })
 }
+
+export const maskEmail = (email: string) => {
+  const [username, domain] = email.split('@')
+  const maskedUsername = username.substring(0, 3) + '*'.repeat(username.length - 3)
+  return `${maskedUsername}@${domain}`
+}

@@ -1,9 +1,14 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { HttpStatusCode } from 'axios'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { register } from 'src/apis/auth'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
+import { ERROR_MESSAGE } from 'src/constants/message'
+import useLocalStorage from 'src/hooks/useLocalStorage'
 import { cn } from 'src/lib/tailwind/utils'
 import { path } from 'src/routes/path'
 import { RegisterBody } from 'src/types/account.type'
@@ -13,16 +18,37 @@ type FormData = Pick<AuthenSchemaType, 'username' | 'password' | 'confirm_passwo
 const registerSchema = authenSchema.pick(['username', 'password', 'confirm_password', 'name'])
 
 export default function Register() {
+  const [_expiredTimeForAccountVerification, setExpiredTimeForAccountVerification] = useLocalStorage<string>(
+    'expired_time_for_account_verification',
+    ''
+  )
+  const [_, setLastCalledTime] = useLocalStorage<string>('lastCalledTime', '')
+  const [_email, setEmail] = useLocalStorage<string>('email', '')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setExpiredTimeForAccountVerification('')
+    setEmail('')
+  }, [])
+
   const { control, handleSubmit } = useForm<FormData>({
     resolver: yupResolver(registerSchema)
   })
 
   const { mutate, error, isPending } = register({
-    onSuccess: (data) => {
-      console.log(data)
+    onSuccess: () => {
+      setExpiredTimeForAccountVerification(moment().add(10, 'minutes').toISOString())
+      setLastCalledTime(moment().toISOString())
+      navigate(path.verifyAccount)
     },
     onError: (error) => {
       console.error(error.message)
+      if (error.status === HttpStatusCode.BadRequest) {
+        setErrorMessage(ERROR_MESSAGE.EXIST_ACCOUNT)
+      }
+      setEmail('')
     }
   })
 
@@ -31,6 +57,7 @@ export default function Register() {
   }
 
   const onSubmit = handleSubmit((data: FormData) => {
+    setEmail(data.username)
     handleRegister({
       fullName: data.name,
       email: data.username,
@@ -43,7 +70,7 @@ export default function Register() {
       <h1 className='text-4xl font-semibold uppercase tracking-wide text-primary'>Đăng ký</h1>
       <p className='mt-1 text-sm tracking-wide text-neutral-5'>để trở thành thành viên mới của cộng đồng chúng tôi</p>
       <div className='mt-4 min-h-[15px] text-sm font-semibold leading-[15px] text-semantic-cancelled'>
-        {error?.message}
+        {errorMessage || error?.message}
       </div>
       <form action='' className='mt-4' onSubmit={onSubmit}>
         <Input

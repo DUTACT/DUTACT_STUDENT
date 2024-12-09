@@ -3,7 +3,9 @@ export const ERROR_MESSAGE = {
   forbidden: 'Bạn không được phép truy cập trang này',
   payload_too_large: 'Nội dung tải lên của bạn có dung lượng quá lớn',
   UNEXPECTED_ERROR: 'An unexpected error occurred',
-  INVALID_PASSWORD: 'Mật khẩu hiện tại không đúng'
+  INVALID_PASSWORD: 'Mật khẩu hiện tại không đúng',
+  RESEND_OTP: 'Yêu cầu gửi lại mã xác thực thất bại',
+  EXIST_ACCOUNT: 'Email này đã được đăng ký trước đây'
 }
 
 export const SUCCESS_MESSAGE = {

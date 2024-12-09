@@ -12,6 +12,7 @@ import NewsFeed from 'src/pages/NewsFeed'
 import SearchPage from 'src/pages/SearchPage'
 import Profile from 'src/pages/Profile'
 import DetailEvent from 'src/pages/DetailEvent'
+import VerifyAccount from 'src/pages/VerifyAccount'
 
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated } = useAppContext()
@@ -97,6 +98,14 @@ export default function useRouteElements() {
           element: (
             <AuthenLayout>
               <ForgotPassword />
+            </AuthenLayout>
+          )
+        },
+        {
+          path: path.verifyAccount,
+          element: (
+            <AuthenLayout>
+              <VerifyAccount />
             </AuthenLayout>
           )
         }
