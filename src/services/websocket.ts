@@ -1,5 +1,7 @@
 import { toast } from 'react-toastify'
+import useLocalStorage from 'src/hooks/useLocalStorage'
 import { MessageCommand, WebSocketMessage } from 'src/types/websocket.type'
+import { getOrCreateFingerprintId } from 'src/utils/fingerprint'
 
 let socket: WebSocket | null = null
 
@@ -54,6 +56,7 @@ const handleMessage = (message: string, onMessage: (data: any) => void) => {
     if (parsedMessage.command === 'SUBSCRIBE_ACK') {
       const subscriptionToken = parsedMessage.headers['subscription-token']
       if (subscriptionToken) {
+        localStorage.setItem('subscription-token', subscriptionToken)
         sendMessage({
           command: 'CONNECT',
           headers: { 'subscription-token': subscriptionToken }
@@ -89,18 +92,27 @@ const sendMessage = (message: WebSocketMessage) => {
 export const connectWebSocket = (url: string, onMessage: (data: any) => void) => {
   socket = new WebSocket(url)
 
-  socket.onopen = () => {
+  socket.onopen = async () => {
     console.log('WebSocket connected')
     const accessToken = localStorage.getItem('access_token')
     try {
       const tokenString = accessToken ? JSON.parse(accessToken).toString() : ''
-      sendMessage({
-        command: 'SUBSCRIBE',
-        headers: {
-          'device-id': crypto.randomUUID(),
-          'access-token': tokenString
-        }
-      })
+      const subscriptionToken = localStorage.getItem('subscription-token')
+      if (subscriptionToken) {
+        sendMessage({
+          command: 'CONNECT',
+          headers: { 'subscription-token': subscriptionToken }
+        })
+      } else {
+        const deviceId = await getOrCreateFingerprintId()
+        sendMessage({
+          command: 'SUBSCRIBE',
+          headers: {
+            'device-id': deviceId,
+            'access-token': tokenString
+          }
+        })
+      }
     } catch (error) {
       console.error('Failed to parse access_token:', error)
     }
@@ -120,6 +132,24 @@ export const connectWebSocket = (url: string, onMessage: (data: any) => void) =>
 
 export const disconnectWebSocket = () => {
   if (socket) {
+    if (socket.readyState === WebSocket.OPEN) {
+      const subscriptionToken = localStorage.getItem('subscription-token')
+      if (subscriptionToken) {
+        sendMessage({
+          command: 'DISCONNECT',
+          headers: {
+            'subscription-token': subscriptionToken
+          }
+        })
+        sendMessage({
+          command: 'UNSUBSCRIBE',
+          headers: {
+            'subscription-token': subscriptionToken
+          }
+        })
+      }
+    }
+
     socket.close()
     socket = null
   }

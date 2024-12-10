@@ -7,6 +7,11 @@ import ResponseInterceptor from './config/ResponseInterceptor'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ModalConfirm from './components/ModalConfirm'
+import { connectWebSocket, disconnectWebSocket } from './services/websocket.ts'
+import { addNotification } from './redux/slices/notificationsSlice.ts'
+import { CONFIG } from './constants/config.ts'
+import store from './redux/store.ts'
+import { useAppContext } from './contexts/app.context.tsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +25,20 @@ const queryClient = new QueryClient({
 export default function App() {
   const routeElements = useRouteElements()
   const { pathname } = useLocation()
+  const { isAuthenticated } = useAppContext()
+
+  useEffect(() => {
+    console.log('isAuthenticated', isAuthenticated)
+    if (isAuthenticated) {
+      connectWebSocket(CONFIG.WEBSOCKET_URL, (data) => {
+        store.dispatch(addNotification(data))
+      })
+    }
+
+    return () => {
+      disconnectWebSocket()
+    }
+  }, [isAuthenticated])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { DATE_TIME_FORMATS } from 'src/constants/common'
 import { path } from 'src/routes/path'
 import { Activity } from 'src/types/activity.type'
+import { timeAgo } from 'src/utils/datetime'
 
 interface ActivityContainerProps {
   activity: Activity
@@ -13,7 +14,7 @@ export default function ActivityContainer({ activity }: ActivityContainerProps) 
   return (
     <div className='flex flex-col gap-2 rounded-md border border-neutral-3 bg-neutral-0 px-4 py-2 text-neutral-6 shadow-custom'>
       <div className='text-sm font-medium text-neutral-7'>
-        {moment(activity.createdAt).format(DATE_TIME_FORMATS.DATE_TIME_COMMON)}
+        {timeAgo(moment(activity.createdAt).format(DATE_TIME_FORMATS.DATE_TIME_COMMON))}
       </div>
       {activity.type === 'EVENT_REGISTER' && (
         <div>
