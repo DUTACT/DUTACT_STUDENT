@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify'
-import useLocalStorage from 'src/hooks/useLocalStorage'
 import { MessageCommand, WebSocketMessage } from 'src/types/websocket.type'
 import { getOrCreateFingerprintId } from 'src/utils/fingerprint'
 
