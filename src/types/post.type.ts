@@ -1,3 +1,5 @@
+import { OrganizerInformation } from './event.type'
+
 export interface Post {
   id: number
   content: string
@@ -9,4 +11,5 @@ export interface Post {
     id: number
     name: string
   }
+  organizer: OrganizerInformation
 }

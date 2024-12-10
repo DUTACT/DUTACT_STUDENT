@@ -10,5 +10,6 @@ export const path = {
   detailEvent: {
     pattern: '/event/:id',
     link: (id: number) => `/event/${id}`
-  }
+  },
+  notification: '/notification'
 }

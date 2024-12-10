@@ -61,3 +61,7 @@ export const getEventCheckInUrl = (eventId?: number): string => {
 // student-activity-controller
 
 export const BASE_API_URL_ACTIVITY = '/api/student/activities'
+
+// notification-controller
+
+export const BASE_API_URL_NOTIFICATIONS = '/api/notifications'

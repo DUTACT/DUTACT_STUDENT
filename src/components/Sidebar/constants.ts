@@ -7,6 +7,8 @@ import SearchIcon from 'src/assets/icons/i-search.svg?react'
 import SearchActiveIcon from 'src/assets/icons/i-search-active.svg?react'
 import UserIcon from 'src/assets/icons/i-user.svg?react'
 import UserActiveIcon from 'src/assets/icons/i-user-active.svg?react'
+import NotificationIcon from 'src/assets/icons/i-notification.svg?react'
+import NotificationActiveIcon from 'src/assets/icons/i-notification-active.svg?react'
 
 export const SIDEBAR_ROUTES = [
   {
@@ -26,6 +28,12 @@ export const SIDEBAR_ROUTES = [
     name: 'Tìm kiếm',
     icon: SearchIcon,
     iconActive: SearchActiveIcon
+  },
+  {
+    path: path.notification,
+    name: 'Thông báo',
+    icon: NotificationIcon,
+    iconActive: NotificationActiveIcon
   },
   {
     path: path.profile,

@@ -13,6 +13,7 @@ import SearchPage from 'src/pages/SearchPage'
 import Profile from 'src/pages/Profile'
 import DetailEvent from 'src/pages/DetailEvent'
 import VerifyAccount from 'src/pages/VerifyAccount'
+import Notification from 'src/pages/Notification/Notification'
 
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated } = useAppContext()
@@ -68,6 +69,14 @@ export default function useRouteElements() {
           element: (
             <MainLayout>
               <Profile />
+            </MainLayout>
+          )
+        },
+        {
+          path: path.notification,
+          element: (
+            <MainLayout>
+              <Notification />
             </MainLayout>
           )
         }

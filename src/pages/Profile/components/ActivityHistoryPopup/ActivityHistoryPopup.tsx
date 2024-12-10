@@ -4,6 +4,7 @@ import CloseIcon from 'src/assets/icons/i-close.svg?react'
 import { useActivities } from '../../hooks/useActivities'
 import { useInView } from 'react-intersection-observer'
 import ActivityContainer from 'src/components/ActivityContainer'
+import { toast } from 'react-toastify'
 
 interface ActivityHistoryPopupProps {
   setIsShowActivityHistoryPopup: React.Dispatch<React.SetStateAction<boolean>>
@@ -16,6 +17,10 @@ export default function ActivityHistoryPopup({ setIsShowActivityHistoryPopup }: 
     threshold: 1.0,
     rootMargin: '100px'
   })
+
+  if (error) {
+    toast.error(error.message)
+  }
 
   if (inView && hasNextPage && !isFetchingNextPage) {
     fetchMoreActivities()
