@@ -60,6 +60,17 @@ export default function ActivityContainer({ activity }: ActivityContainerProps) 
           </span>
         </div>
       )}
+      {activity.type === 'FEEDBACK_CREATE' && (
+        <div>
+          Bạn đã đăng <span className='font-medium text-semantic-secondary'>một cảm nghĩ</span> trong sự kiện{' '}
+          <span
+            className='font-medium text-semantic-secondary hover:cursor-pointer'
+            onClick={() => navigate(path.detailEvent.link(activity.eventId))}
+          >
+            {activity.eventName}
+          </span>
+        </div>
+      )}
     </div>
   )
 }

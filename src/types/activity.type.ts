@@ -1,4 +1,4 @@
-export type ActivityType = 'EVENT_REGISTER' | 'EVENT_FOLLOW' | 'POST_LIKE' | 'FEEDBACK_LIKE'
+export type ActivityType = 'EVENT_REGISTER' | 'EVENT_FOLLOW' | 'POST_LIKE' | 'FEEDBACK_LIKE' | 'FEEDBACK_CREATE'
 
 export interface Activity {
   id: number
