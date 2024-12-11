@@ -29,6 +29,8 @@ export default function DetailEvent() {
     unfollow: { mutate: unfollowEvent }
   } = useDetailEvent(eventId)
 
+  const defaultTab = location.search.includes('feedbackId') ? 1 : 0
+
   const handleRegisterEvent = () => {
     if (event) {
       registerEvent(event.id)
@@ -161,7 +163,7 @@ export default function DetailEvent() {
             </div>
             <p className='break-word mt-4 flex whitespace-pre-line text-sm text-body-text'>{event.content}</p>
             <div className='relative flex h-full flex-col overflow-y-auto py-3 text-sm'>
-              <Tabs>
+              <Tabs defaultActiveIndex={defaultTab}>
                 <Tab label='Bài đăng'>
                   <PostList organizer={event.organizer} />
                 </Tab>

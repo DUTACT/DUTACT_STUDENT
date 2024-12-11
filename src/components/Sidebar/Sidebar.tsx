@@ -8,10 +8,11 @@ import LogOutActiveIcon from 'src/assets/icons/i-log-out-active.svg?react'
 import { useAppContext } from 'src/contexts/app.context'
 import { setupToken } from 'src/config/queryClient'
 import DutactLogo from 'src/assets/img/dutact-logo.png'
-import { disconnectWebSocket } from 'src/services/websocket'
+import { useWebSocketContext } from 'src/contexts/websocket.context'
 
 export default function Sidebar() {
   const { setIsAuthenticated } = useAppContext()
+  const { disconnectWebSocket } = useWebSocketContext()
 
   const handleLogOut = () => {
     disconnectWebSocket()

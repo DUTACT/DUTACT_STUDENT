@@ -1,14 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AddIcon from 'src/assets/icons/i-add.svg?react'
 import CreateOrUpdateFeedbackPopup from '../CreateOrUpdateFeedbackPopup'
 import { useFeedbacks } from '../../hooks/useFeedbacks'
 import { toast } from 'react-toastify'
 import FeedbackContainer from 'src/pages/DetailEvent/components/FeedbackContainer'
+import { useSearchParams } from 'react-router-dom'
 
 export default function FeedbackList() {
   const [isShowCreateOrUpdateFeedbackPopup, setIsShowCreateOrUpdateFeedbackPopup] = useState<boolean>(false)
-
   const { feedbacks, error, isLoading } = useFeedbacks()
+  const [searchParams] = useSearchParams()
+  const feedbackId = searchParams.get('feedbackId') ? parseInt(searchParams.get('feedbackId') || '0', 10) : 0
+  const feedbackRefs = useRef<{ [key: string]: HTMLElement | null }>({})
+
+  useEffect(() => {
+    if (feedbackId && feedbacks.length > 0) {
+      const feedbackElement = feedbackRefs.current[feedbackId]
+      if (feedbackElement) {
+        feedbackElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }
+  }, [feedbackId, feedbacks])
 
   if (error) {
     toast.error(error.message)
@@ -24,7 +36,14 @@ export default function FeedbackList() {
       {feedbacks && feedbacks.length > 0 && (
         <div className='flex w-full flex-col gap-3'>
           {feedbacks.map((feedback) => (
-            <FeedbackContainer key={feedback.id} feedback={feedback} />
+            <div
+              key={feedback.id}
+              ref={(el) => {
+                feedbackRefs.current[feedback.id] = el
+              }}
+            >
+              <FeedbackContainer feedback={feedback} />
+            </div>
           ))}
         </div>
       )}
