@@ -11,64 +11,51 @@ interface ActivityContainerProps {
 
 export default function ActivityContainer({ activity }: ActivityContainerProps) {
   const navigate = useNavigate()
+
+  const navigateToEvent = () => {
+    if (activity.type === 'EVENT_FOLLOW' || activity.type === 'EVENT_REGISTER') {
+      navigate(path.detailEvent.link(activity.eventId))
+    } else if (activity.type === 'POST_LIKE') {
+      navigate(path.detailEvent.link(activity.eventId, activity.postId ?? undefined))
+    } else if (activity.type === 'FEEDBACK_CREATE' || activity.type === 'FEEDBACK_LIKE') {
+      navigate(path.detailEvent.link(activity.eventId, undefined, activity.feedbackId ?? undefined))
+    }
+  }
+
   return (
-    <div className='flex flex-col gap-2 rounded-md border border-neutral-3 bg-neutral-0 px-4 py-2 text-neutral-6 shadow-custom'>
+    <div
+      className='flex flex-col gap-2 rounded-md border border-neutral-3 bg-neutral-0 px-4 py-2 text-neutral-6 shadow-custom hover:cursor-pointer'
+      onClick={navigateToEvent}
+    >
       <div className='text-sm font-medium text-neutral-7'>
         {timeAgo(moment(activity.createdAt).format(DATE_TIME_FORMATS.DATE_TIME_COMMON))}
       </div>
       {activity.type === 'EVENT_REGISTER' && (
         <div>
-          Bạn đã đăng ký sự kiện{' '}
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(activity.eventId))}
-          >
-            {activity.eventName}
-          </span>
+          Bạn đã đăng ký sự kiện <span className='font-medium text-semantic-secondary'>{activity.eventName}</span>
         </div>
       )}
       {activity.type === 'EVENT_FOLLOW' && (
         <div>
-          Bạn đã theo dõi sự kiện{' '}
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(activity.eventId))}
-          >
-            {activity.eventName}
-          </span>
+          Bạn đã theo dõi sự kiện <span className='font-medium text-semantic-secondary'>{activity.eventName}</span>
         </div>
       )}
       {activity.type === 'POST_LIKE' && (
         <div>
           Bạn đã thích <span className='font-medium text-semantic-secondary'>một bài đăng</span> trong sự kiện{' '}
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(activity.eventId))}
-          >
-            {activity.eventName}
-          </span>
+          <span className='font-medium text-semantic-secondary'>{activity.eventName}</span>
         </div>
       )}
       {activity.type === 'FEEDBACK_LIKE' && (
         <div>
           Bạn đã thích <span className='font-medium text-semantic-secondary'>một cảm nghĩ</span> trong sự kiện{' '}
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(activity.eventId))}
-          >
-            {activity.eventName}
-          </span>
+          <span className='font-medium text-semantic-secondary'>{activity.eventName}</span>
         </div>
       )}
       {activity.type === 'FEEDBACK_CREATE' && (
         <div>
           Bạn đã đăng <span className='font-medium text-semantic-secondary'>một cảm nghĩ</span> trong sự kiện{' '}
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(activity.eventId))}
-          >
-            {activity.eventName}
-          </span>
+          <span className='font-medium text-semantic-secondary'>{activity.eventName}</span>
         </div>
       )}
     </div>

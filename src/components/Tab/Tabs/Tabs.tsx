@@ -4,10 +4,11 @@ import { cn } from 'src/lib/tailwind/utils'
 
 interface TabsProps {
   children: React.ReactElement<TabProps>[]
+  defaultActiveIndex?: number
 }
 
-export default function Tabs({ children }: TabsProps) {
-  const [activeIndex, setActiveIndex] = useState(0)
+export default function Tabs({ children, defaultActiveIndex = 0 }: TabsProps) {
+  const [activeIndex, setActiveIndex] = useState(defaultActiveIndex)
   const tabsRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {

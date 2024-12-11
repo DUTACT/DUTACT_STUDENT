@@ -9,7 +9,12 @@ export const path = {
   profile: '/profile',
   detailEvent: {
     pattern: '/event/:id',
-    link: (id: number) => `/event/${id}`
+    link: (id: number, postId?: number, feedbackId?: number) => {
+      const queryParams = new URLSearchParams()
+      if (postId) queryParams.append('postId', postId.toString())
+      if (feedbackId) queryParams.append('feedbackId', feedbackId.toString())
+      return `/event/${id}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+    }
   },
   notification: '/notification'
 }

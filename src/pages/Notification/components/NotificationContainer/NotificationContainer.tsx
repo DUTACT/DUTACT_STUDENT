@@ -11,35 +11,35 @@ interface NotificationContainerProps {
 
 export default function NotificationContainer({ notification }: NotificationContainerProps) {
   const navigate = useNavigate()
+
+  const navigateToEventPage = () => {
+    if (notification.notification_type === 'post_created') {
+      navigate(path.detailEvent.link(notification.details.event.id, notification.details.id))
+    } else {
+      navigate(path.detailEvent.link(notification.details.eventId))
+    }
+  }
+
   return (
-    <div className='flex flex-col gap-2 rounded-md border border-neutral-3 bg-neutral-0 px-4 py-2 text-neutral-6 shadow-custom'>
+    <div
+      className='flex flex-col gap-2 rounded-md border border-neutral-3 bg-neutral-0 px-4 py-2 text-neutral-6 shadow-custom hover:cursor-pointer'
+      onClick={navigateToEventPage}
+    >
       <div className='text-sm font-medium text-neutral-7'>
         {timeAgo(moment(notification.created_at).format(DATE_TIME_FORMATS.DATE_TIME_COMMON))}
       </div>
       {notification.notification_type === 'post_created' && (
         <div>
-          <span className='font-medium text-semantic-secondary hover:cursor-pointer'>
-            {notification.details.organizer.name}
-          </span>{' '}
-          đã đăng một bài đăng về sự kiện{' '}
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(notification.details.event.id))}
-          >
-            {notification.details.event.name}
-          </span>
+          <span className='font-medium text-semantic-secondary'>{notification.details.organizer.name}</span> đã đăng một
+          bài đăng về sự kiện{' '}
+          <span className='font-medium text-semantic-secondary'>{notification.details.event.name}</span>
         </div>
       )}
       {notification.notification_type === 'event_start_remind' && (
         <div>
           Chỉ còn <span>30 phút</span> nữa thôi là sự kiện
-          <span
-            className='font-medium text-semantic-secondary hover:cursor-pointer'
-            onClick={() => navigate(path.detailEvent.link(notification.details.eventId))}
-          >
-            {notification.details.eventName}
-          </span>{' '}
-          diễn ra rồi. Hãy chuẩn bị một tinh thần thật tốt để tham gia sự kiện nhé.
+          <span className='font-medium text-semantic-secondary'>{notification.details.eventName}</span> diễn ra rồi. Hãy
+          chuẩn bị một tinh thần thật tốt để tham gia sự kiện nhé.
         </div>
       )}
     </div>
