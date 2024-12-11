@@ -20,3 +20,4 @@ export const DATE_TIME_FORMATS = {
 export const DEFAULT_PAGE_NUMBER = 1
 export const DEFAULT_PAGE_SIZE = 10
 export const OTP_LENGTH = 6
+export const DIFF_TIME_FOR_OLD_NOTIFICATION = 1 // minute

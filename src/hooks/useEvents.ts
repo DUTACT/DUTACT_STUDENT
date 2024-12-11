@@ -28,7 +28,13 @@ export function useEvents(): EventResult {
       queryClient.setQueryData<EventOfOrganizer[]>(['getEvents'], (currentEvents) => {
         return currentEvents?.map((event) => {
           if (event.id === data.eventId) {
-            return { ...event, registeredAt: data.registeredAt, registerNumber: event.registerNumber + 1 }
+            return {
+              ...event,
+              registeredAt: data.registeredAt,
+              registerNumber: event.registerNumber + 1,
+              followedAt: data.registeredAt,
+              followerNumber: event.followerNumber + 1
+            }
           }
           return event
         })
