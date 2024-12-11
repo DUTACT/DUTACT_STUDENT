@@ -22,7 +22,13 @@ export function useDetailEvent(eventId: number): DetailEventResult {
     onSuccess: (data: RegisterResponse) => {
       queryClient.setQueryData<EventOfOrganizer>(['getEventById', eventId], (currentEvent) => {
         return currentEvent
-          ? { ...currentEvent, registeredAt: data.registeredAt, registerNumber: currentEvent.registerNumber + 1 }
+          ? {
+              ...currentEvent,
+              registeredAt: data.registeredAt,
+              registerNumber: currentEvent.registerNumber + 1,
+              followedAt: data.registeredAt,
+              followerNumber: currentEvent.followerNumber + 1
+            }
           : undefined
       })
     },

@@ -2,10 +2,20 @@ import { useInView } from 'react-intersection-observer'
 import { toast } from 'react-toastify'
 import { useNotifications } from 'src/hooks/useNotifications'
 import NotificationContainer from './components/NotificationContainer'
+import { useWebSocketContext } from 'src/contexts/websocket.context'
+import { useEffect } from 'react'
+import { useSnackbar } from 'notistack'
 
 export default function Notification() {
   const { notifications, fetchMoreNotifications, hasNextPage, isFetchingNextPage, isLoading, error } =
     useNotifications()
+  const { setNotificationCount } = useWebSocketContext()
+  const { closeSnackbar } = useSnackbar()
+
+  useEffect(() => {
+    setNotificationCount(0)
+    closeSnackbar()
+  }, [])
 
   const { ref: scrollRef, inView } = useInView({
     threshold: 1.0,

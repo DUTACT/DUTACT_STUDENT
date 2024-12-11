@@ -5,7 +5,7 @@ export interface Post {
   content: string
   postedAt: string
   coverPhotoUrl: string
-  likedNumber: number | null
+  likedNumber: number
   likedAt: string | null
   event: {
     id: number

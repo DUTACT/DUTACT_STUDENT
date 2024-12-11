@@ -1,11 +1,15 @@
 import { useSnackbar } from 'notistack'
-import { createContext, useContext, useRef } from 'react'
+import { createContext, useContext, useRef, useState } from 'react'
 import CustomSnackbar from 'src/components/CustomSnackbar'
 import NotificationContentSnackbar from 'src/components/NotificationContentSnackbar'
-import { EventNotificationContent } from 'src/types/notification.type'
+import { EventNotification, EventNotificationContent } from 'src/types/notification.type'
 import { MessageCommand } from 'src/types/websocket.type'
 import { getOrCreateFingerprintId } from 'src/utils/fingerprint'
 import notificationSound from 'src/assets/sound/notification.wav'
+import { useNotifications } from 'src/hooks/useNotifications'
+import { useStudentId } from 'src/hooks/useStudentId'
+import moment from 'moment'
+import { DIFF_TIME_FOR_OLD_NOTIFICATION } from 'src/constants/common'
 
 interface WebSocketMessage {
   command: string
@@ -22,6 +26,8 @@ interface WebSocketContextType {
   disconnectWebSocket: () => void
   sendMessage: (_message: WebSocketMessage) => void
   handleMessage: (_message: string, _onMessage: (_data: any) => void) => void
+  notificationCount: number
+  setNotificationCount: React.Dispatch<React.SetStateAction<number>>
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -74,8 +80,11 @@ export const parseMessage = (message: string): WebSocketMessage => {
 
 export const WebSocketProvider = ({ children }: WebSocketProviderProps) => {
   const { enqueueSnackbar } = useSnackbar()
+  const { addNotificationToCache } = useNotifications()
+  const studentId = useStudentId()
 
   const socket = useRef<WebSocket | null>(null)
+  const [notificationCount, setNotificationCount] = useState<number>(0)
 
   const connectWebSocket = (url: string, onMessage: (_data: any) => void) => {
     socket.current = new WebSocket(url)
@@ -176,17 +185,35 @@ export const WebSocketProvider = ({ children }: WebSocketProviderProps) => {
           case 'MESSAGE': {
             if (parsedMessage.body) {
               const notificationContent: EventNotificationContent = JSON.parse(parsedMessage.body)
-              enqueueSnackbar('notification', {
-                content: (key) => (
-                  <CustomSnackbar
-                    snackbarKey={key}
-                    message={<NotificationContentSnackbar content={notificationContent} />}
-                  />
-                ),
-                autoHideDuration: 2 * 60 * 1000
-              })
-              const audio = new Audio(notificationSound)
-              audio.play()
+              const createdAt = moment(notificationContent.createdAt)
+              const currentTime = moment()
+
+              const isOldNotification = currentTime.diff(createdAt, 'minutes') > DIFF_TIME_FOR_OLD_NOTIFICATION
+
+              if (!isOldNotification) {
+                enqueueSnackbar('notification', {
+                  content: (key) => (
+                    <CustomSnackbar
+                      snackbarKey={key}
+                      message={<NotificationContentSnackbar content={notificationContent} />}
+                    />
+                  ),
+                  autoHideDuration: 2 * 60 * 1000
+                })
+                const audio = new Audio(notificationSound)
+                audio.play().catch((error) => {
+                  console.error('Failed to play audio:', error)
+                })
+              }
+
+              setNotificationCount((prev) => prev + 1)
+              addNotificationToCache({
+                account_id: studentId,
+                created_at: notificationContent.createdAt,
+                id: notificationContent.notificationId,
+                notification_type: notificationContent.notificationType,
+                details: notificationContent.details
+              } as EventNotification)
             }
           }
         }
@@ -196,7 +223,16 @@ export const WebSocketProvider = ({ children }: WebSocketProviderProps) => {
   }
 
   return (
-    <WebSocketContext.Provider value={{ connectWebSocket, disconnectWebSocket, sendMessage, handleMessage }}>
+    <WebSocketContext.Provider
+      value={{
+        connectWebSocket,
+        disconnectWebSocket,
+        sendMessage,
+        handleMessage,
+        notificationCount,
+        setNotificationCount
+      }}
+    >
       {children}
     </WebSocketContext.Provider>
   )
