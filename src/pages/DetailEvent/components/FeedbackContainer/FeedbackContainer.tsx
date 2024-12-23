@@ -6,12 +6,15 @@ import HeartIcon from 'src/assets/icons/i-heart.svg?react'
 import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import FeedbackMenu from '../FeedbackMenu'
 import { useFeedbacks } from '../../hooks/useFeedbacks'
+import { useState } from 'react'
+import PeopleLikedPopup from '../PeopleLikedPopup'
 
 interface FeedbackContainerProps {
   feedback: Feedback
 }
 
 export default function FeedbackContainer({ feedback }: FeedbackContainerProps) {
+  const [isShowLikes, setIsShowLikes] = useState<boolean>(false)
   const {
     onLikeFeedback: { mutate: likeFeedback },
     onUnlikeFeedback: { mutate: unlikeFeedback }
@@ -56,8 +59,8 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
         </div>
       )}
 
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-1'>
+      <div className='flex w-full items-center justify-between'>
+        <div className='flex w-full items-center justify-between gap-1'>
           <div
             className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
             onClick={feedback.likedAt ? handleUnlikeFeedback : handleLikeFeedback}
@@ -66,8 +69,14 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
             {!feedback.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
             <span className='select-none text-sm font-normal'>{feedback.likedNumber}</span>
           </div>
+          {feedback.likedNumber > 0 && (
+            <div className='font-medium hover:cursor-pointer' onClick={() => setIsShowLikes(true)}>
+              {feedback.likedNumber} lượt thích
+            </div>
+          )}
         </div>
       </div>
+      {isShowLikes && <PeopleLikedPopup id={feedback.id} type='feedback' setIsShowPopup={setIsShowLikes} />}
     </div>
   )
 }
