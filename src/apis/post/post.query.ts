@@ -1,9 +1,10 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { queryFetch } from 'src/config/queryClient'
 import { STALE_TIME } from 'src/constants/common'
-import { getPostUrl } from 'src/constants/endpoints'
+import { getLikesOfPostOrFeedback, getPostUrl } from 'src/constants/endpoints'
 import { ApiError } from 'src/types/client.type'
 import { Post } from 'src/types/post.type'
+import { StudentLikeInfo } from 'src/types/profile.type'
 
 export const getPostsOfEvent = (eventId: number, options?: UseQueryOptions<Post[], ApiError>) => {
   return useQuery<Post[], ApiError>({
@@ -16,6 +17,32 @@ export const getPostsOfEvent = (eventId: number, options?: UseQueryOptions<Post[
       return response
     },
     staleTime: options?.staleTime ?? STALE_TIME,
+    ...options
+  })
+}
+
+export const getLikesOfPost = (postId: number, options?: UseQueryOptions<StudentLikeInfo[], ApiError>) => {
+  return useQuery<StudentLikeInfo[], ApiError>({
+    queryKey: ['getLikesOfPost', postId],
+    queryFn: async () => {
+      const response = await queryFetch<StudentLikeInfo[]>({
+        url: getLikesOfPostOrFeedback('posts', postId)
+      })
+      return response
+    },
+    ...options
+  })
+}
+
+export const getLikesOfFeedback = (feedbackId: number, options?: UseQueryOptions<StudentLikeInfo[], ApiError>) => {
+  return useQuery<StudentLikeInfo[], ApiError>({
+    queryKey: ['getLikesOfFeedback', feedbackId],
+    queryFn: async () => {
+      const response = await queryFetch<StudentLikeInfo[]>({
+        url: getLikesOfPostOrFeedback('feedbacks', feedbackId)
+      })
+      return response
+    },
     ...options
   })
 }

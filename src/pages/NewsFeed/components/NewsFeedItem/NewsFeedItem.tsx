@@ -7,6 +7,8 @@ import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import { useNavigate } from 'react-router-dom'
 import { path } from 'src/routes/path'
 import { useNewsFeeds } from '../../hooks/useNewsFeeds'
+import { useState } from 'react'
+import PeopleLikedPopup from 'src/pages/DetailEvent/components/PeopleLikedPopup'
 
 interface NewsFeedItemProps {
   newsFeed: NewsFeedIemType
@@ -14,6 +16,8 @@ interface NewsFeedItemProps {
 
 export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
   const navigate = useNavigate()
+  const [isShowLikes, setIsShowLikes] = useState<boolean>(false)
+
   const {
     onLikeNewsFeed: { mutate: likeNewsFeed },
     onUnlikeNewsFeed: { mutate: unlikeNewsFeed }
@@ -62,8 +66,8 @@ export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
           />
         </div>
       )}
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-1'>
+      <div className='flex w-full items-center justify-between'>
+        <div className='flex w-full items-center justify-between gap-1'>
           <div
             className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
             onClick={newsFeed.likedAt ? handleUnlikeNewsFeed : handleLikeNewsFeed}
@@ -72,8 +76,14 @@ export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
             {!newsFeed.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
             <span className='select-none text-sm font-normal'>{newsFeed.likedNumber}</span>
           </div>
+          {newsFeed.likedNumber > 0 && (
+            <div className='font-medium hover:cursor-pointer' onClick={() => setIsShowLikes(true)}>
+              {newsFeed.likedNumber} lượt thích
+            </div>
+          )}
         </div>
       </div>
+      {isShowLikes && <PeopleLikedPopup id={newsFeed.id} type={newsFeed.type} setIsShowPopup={setIsShowLikes} />}
     </div>
   )
 }

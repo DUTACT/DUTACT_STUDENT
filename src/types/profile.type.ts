@@ -14,3 +14,10 @@ export interface ChangePasswordBody {
   oldPassword: string
   newPassword: string
 }
+
+export interface StudentLikeInfo {
+  id: number
+  fullName: string
+  email: string
+  avatarUrl: string
+}

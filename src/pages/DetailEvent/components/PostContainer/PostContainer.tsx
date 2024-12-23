@@ -6,6 +6,8 @@ import { DATE_TIME_FORMATS } from 'src/constants/common'
 import HeartIcon from 'src/assets/icons/i-heart.svg?react'
 import HeartActiveIcon from 'src/assets/icons/i-heart-active.svg?react'
 import { usePosts } from 'src/pages/DetailEvent/hooks/usePosts'
+import { useState } from 'react'
+import PeopleLikedPopup from '../PeopleLikedPopup'
 
 interface PostContainerProps {
   post: Post
@@ -13,6 +15,7 @@ interface PostContainerProps {
 }
 
 export default function PostContainer({ post, organizer }: PostContainerProps) {
+  const [isShowLikes, setIsShowLikes] = useState<boolean>(false)
   const {
     onLikePost: { mutate: likePost },
     onUnlikePost: { mutate: unlikePost }
@@ -50,8 +53,8 @@ export default function PostContainer({ post, organizer }: PostContainerProps) {
           className='absolute left-0 top-0 mx-auto h-full w-full rounded-lg object-cover'
         />
       </div>
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-1'>
+      <div className='flex w-full items-center justify-between'>
+        <div className='flex w-full items-center justify-between gap-1'>
           <div
             className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
             onClick={post.likedAt ? handleUnlikePost : handleLikePost}
@@ -60,8 +63,14 @@ export default function PostContainer({ post, organizer }: PostContainerProps) {
             {!post.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
             <span className='select-none text-sm font-normal'>{post.likedNumber}</span>
           </div>
+          {post.likedNumber > 0 && (
+            <div className='font-medium hover:cursor-pointer' onClick={() => setIsShowLikes(true)}>
+              {post.likedNumber} lượt thích
+            </div>
+          )}
         </div>
       </div>
+      {isShowLikes && <PeopleLikedPopup id={post.id} type='post' setIsShowPopup={setIsShowLikes} />}
     </div>
   )
 }

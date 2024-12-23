@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 import { useEventId } from '../../hooks/useEventId'
 import { usePosts } from '../../hooks/usePosts'
-import PostContainer from 'src/components/PostContainer'
+import PostContainer from 'src/pages/DetailEvent/components/PostContainer'
 import { OrganizerInformation } from 'src/types/event.type'
 import { useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'

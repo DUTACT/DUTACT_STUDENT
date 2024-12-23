@@ -65,3 +65,9 @@ export const BASE_API_URL_ACTIVITY = '/api/student/activities'
 // notification-controller
 
 export const BASE_API_URL_NOTIFICATIONS = '/api/notifications'
+
+// student-like-controller
+
+export const getLikesOfPostOrFeedback = (type: 'posts' | 'feedbacks', id: number): string => {
+  return `/api/${type}/${id}/likers`
+}
