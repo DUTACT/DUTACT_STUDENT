@@ -1,9 +1,9 @@
 import { ApiError } from 'src/types/client.type'
-import { StudentLikeInfo } from 'src/types/profile.type'
+import { StudentInfo } from 'src/types/profile.type'
 import { getLikesOfFeedback } from 'src/apis/post'
 
 interface FeedbackLikesResult {
-  likes: StudentLikeInfo[]
+  likes: StudentInfo[]
   isLoading: boolean
   error: ApiError | null
 }

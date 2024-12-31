@@ -61,19 +61,16 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
 
       <div className='flex w-full items-center justify-between'>
         <div className='flex w-full items-center justify-between gap-1'>
-          <div
-            className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
-            onClick={feedback.likedAt ? handleUnlikeFeedback : handleLikeFeedback}
-          >
-            {feedback.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' />}
-            {!feedback.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
-            <span className='select-none text-sm font-normal'>{feedback.likedNumber}</span>
-          </div>
-          {feedback.likedNumber > 0 && (
-            <div className='font-medium hover:cursor-pointer' onClick={() => setIsShowLikes(true)}>
+          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer'>
+            {feedback.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' onClick={handleUnlikeFeedback} />}
+            {!feedback.likedAt && <HeartIcon className='h-[16px] w-[16px]' onClick={handleLikeFeedback} />}
+            <span
+              className='select-none text-sm font-normal hover:cursor-pointer hover:underline hover:underline-offset-2'
+              onClick={() => setIsShowLikes(true)}
+            >
               {feedback.likedNumber} lượt thích
-            </div>
-          )}
+            </span>
+          </div>
         </div>
       </div>
       {isShowLikes && <PeopleLikedPopup id={feedback.id} type='feedback' setIsShowPopup={setIsShowLikes} />}

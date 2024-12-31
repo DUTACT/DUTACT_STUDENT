@@ -14,6 +14,9 @@ import { cn } from 'src/lib/tailwind/utils'
 import { useEvents } from 'src/hooks/useEvents'
 import { useNavigate } from 'react-router-dom'
 import { path } from 'src/routes/path'
+import { useState } from 'react'
+import FollowerListPopup from '../FollowerListPopup'
+import RegistrantListPopup from '../RegistrantListPopup'
 
 interface EventContainerProps {
   event: EventOfOrganizer
@@ -21,6 +24,9 @@ interface EventContainerProps {
 
 export default function EventContainer({ event }: EventContainerProps) {
   const navigate = useNavigate()
+  const [isShowFollowers, setIsShowFollowers] = useState<boolean>(false)
+  const [isShowRegistrants, setIsShowRegistrants] = useState<boolean>(false)
+
   const {
     register: { mutate: registerEvent, isPending: isRegisterPending },
     unregister: { mutate: unregisterEvent, isPending: isUnregisterPending },
@@ -99,17 +105,31 @@ export default function EventContainer({ event }: EventContainerProps) {
       </div>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1'>
-          <div
-            className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
-            onClick={event.followedAt ? handleUnfollowEvent : handleFollowEvent}
-          >
-            {event.followedAt && <FollowActiveIcon className='h-[16px] w-[16px] select-none' />}
-            {!event.followedAt && <FollowIcon className='h-[16px] w-[16px] select-none' />}
-            <span className='select-none text-sm font-normal'>{event.followerNumber}</span>
+          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2'>
+            {event.followedAt && (
+              <FollowActiveIcon
+                className='h-[16px] w-[16px] select-none hover:cursor-pointer'
+                onClick={handleUnfollowEvent}
+              />
+            )}
+            {!event.followedAt && (
+              <FollowIcon className='h-[16px] w-[16px] select-none hover:cursor-pointer' onClick={handleFollowEvent} />
+            )}
+            <span
+              className='select-none text-sm font-normal hover:cursor-pointer hover:underline hover:underline-offset-2'
+              onClick={() => setIsShowFollowers(true)}
+            >
+              {event.followerNumber} lượt theo dõi
+            </span>
           </div>
-          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'>
+          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2'>
             <UserAddActiveIcon className='h-[16px] w-[16px] select-none' />
-            <span className='select-none text-sm font-normal'>{event.registerNumber}</span>
+            <span
+              className='select-none text-sm font-normal hover:cursor-pointer hover:underline hover:underline-offset-2'
+              onClick={() => setIsShowRegistrants(true)}
+            >
+              {event.registerNumber} lượt đăng ký
+            </span>
           </div>
         </div>
         {!isRegistrationExpired && (
@@ -151,6 +171,8 @@ export default function EventContainer({ event }: EventContainerProps) {
           </div>
         )}
       </div>
+      {isShowFollowers && <FollowerListPopup eventId={event.id} setIsShowPopup={setIsShowFollowers} />}
+      {isShowRegistrants && <RegistrantListPopup eventId={event.id} setIsShowPopup={setIsShowRegistrants} />}
     </div>
   )
 }
