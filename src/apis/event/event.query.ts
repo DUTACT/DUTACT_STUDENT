@@ -1,10 +1,11 @@
 import { useInfiniteQuery, UseInfiniteQueryOptions, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { queryFetch } from 'src/config/queryClient'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, STALE_TIME } from 'src/constants/common'
-import { getEventUrl } from 'src/constants/endpoints'
+import { BASE_API_URL_EVENT, getEventUrl } from 'src/constants/endpoints'
 import { ApiError } from 'src/types/client.type'
 import { EventOfOrganizer, RegisteredEvent } from 'src/types/event.type'
 import { PageInfo } from 'src/types/pagination.type'
+import { StudentInfo } from 'src/types/profile.type'
 import { generateRegisteredEventTags } from 'src/utils/event'
 
 export const getEvents = (options?: UseQueryOptions<EventOfOrganizer[], ApiError>) => {
@@ -146,5 +147,31 @@ export const getConfirmedEvents = (
         pageParams: data.pageParams || []
       })
     }
+  })
+}
+
+export const getFollowersOfEvent = (eventId: number, options?: UseQueryOptions<StudentInfo[], ApiError>) => {
+  return useQuery<StudentInfo[], ApiError>({
+    queryKey: ['getFollowersOfEvent', eventId],
+    queryFn: async () => {
+      const response = await queryFetch<StudentInfo[]>({
+        url: `${BASE_API_URL_EVENT}/followers/${eventId}`
+      })
+      return response
+    },
+    ...options
+  })
+}
+
+export const getRegistrantsOfEvent = (eventId: number, options?: UseQueryOptions<StudentInfo[], ApiError>) => {
+  return useQuery<StudentInfo[], ApiError>({
+    queryKey: ['getRegistrantsOfEvent', eventId],
+    queryFn: async () => {
+      const response = await queryFetch<StudentInfo[]>({
+        url: `${BASE_API_URL_EVENT}/registrants/${eventId}`
+      })
+      return response
+    },
+    ...options
   })
 }

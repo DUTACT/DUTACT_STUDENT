@@ -15,7 +15,7 @@ export interface ChangePasswordBody {
   newPassword: string
 }
 
-export interface StudentLikeInfo {
+export interface StudentInfo {
   id: number
   fullName: string
   email: string

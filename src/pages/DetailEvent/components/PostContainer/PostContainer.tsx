@@ -55,19 +55,16 @@ export default function PostContainer({ post, organizer }: PostContainerProps) {
       </div>
       <div className='flex w-full items-center justify-between'>
         <div className='flex w-full items-center justify-between gap-1'>
-          <div
-            className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer hover:bg-neutral-2'
-            onClick={post.likedAt ? handleUnlikePost : handleLikePost}
-          >
-            {post.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' />}
-            {!post.likedAt && <HeartIcon className='h-[16px] w-[16px]' />}
-            <span className='select-none text-sm font-normal'>{post.likedNumber}</span>
-          </div>
-          {post.likedNumber > 0 && (
-            <div className='font-medium hover:cursor-pointer' onClick={() => setIsShowLikes(true)}>
+          <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer'>
+            {post.likedAt && <HeartActiveIcon className='h-[16px] w-[16px]' onClick={handleUnlikePost} />}
+            {!post.likedAt && <HeartIcon className='h-[16px] w-[16px]' onClick={handleLikePost} />}
+            <span
+              className='select-none text-sm font-normal hover:cursor-pointer hover:underline hover:underline-offset-2'
+              onClick={() => setIsShowLikes(true)}
+            >
               {post.likedNumber} lượt thích
-            </div>
-          )}
+            </span>
+          </div>
         </div>
       </div>
       {isShowLikes && <PeopleLikedPopup id={post.id} type='post' setIsShowPopup={setIsShowLikes} />}
