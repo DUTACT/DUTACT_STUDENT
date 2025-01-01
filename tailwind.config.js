@@ -41,18 +41,22 @@ module.exports = {
       },
       maxWidth: {
         page: 'var(--page)',
-        popup: 'var(--max-w-popup)'
+        popup: 'var(--max-w-popup)',
+        'footer-popup': 'var(--h-footer-popup)'
       },
       height: {
         'logo-md': 'var(--logo-md)',
         'logo-lg': 'var(--logo-lg)',
         'header-page': 'var(--h-header-page)',
         'header-popup': 'var(--h-header-popup)',
-        'footer-popup': 'var(--h-footer-popup)'
+        'footer-popup': 'var(--h-footer-popup)',
+        popup: 'var(--max-h-popup)',
+        'main-popup': 'var(--h-main-popup)'
       },
       maxHeight: {
         popup: 'var(--max-h-popup)',
-        'main-popup': 'var(--h-main-popup)'
+        'main-popup': 'var(--h-main-popup)',
+        'footer-popup': 'var(--h-footer-popup)'
       },
       margin: {
         sidebar: 'var(--sidebar)'

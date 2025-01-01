@@ -8,6 +8,7 @@ import FeedbackMenu from '../FeedbackMenu'
 import { useFeedbacks } from '../../hooks/useFeedbacks'
 import { useState } from 'react'
 import PeopleLikedPopup from '../PeopleLikedPopup'
+import ImageSlider from 'src/components/ImageSlider'
 
 interface FeedbackContainerProps {
   feedback: Feedback
@@ -15,6 +16,8 @@ interface FeedbackContainerProps {
 
 export default function FeedbackContainer({ feedback }: FeedbackContainerProps) {
   const [isShowLikes, setIsShowLikes] = useState<boolean>(false)
+  const [selectedImage, setSelectedImage] = useState<string>('')
+  const [isShowImageSlider, setIsShowImageSlider] = useState<boolean>(false)
   const {
     onLikeFeedback: { mutate: likeFeedback },
     onUnlikeFeedback: { mutate: unlikeFeedback }
@@ -26,6 +29,11 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
 
   const handleUnlikeFeedback = () => {
     unlikeFeedback(feedback.id)
+  }
+
+  const handleShowImageSlider = (image: string) => {
+    setSelectedImage(image)
+    setIsShowImageSlider(true)
   }
 
   return (
@@ -46,19 +54,69 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
         </div>
         <FeedbackMenu feedbackId={feedback.id} />
       </div>
-
       <p className='break-word flex whitespace-pre-line text-sm text-body-text'>{feedback.content}</p>
-
-      {feedback.coverPhotoUrl && (
-        <div className='aspect-h-9 aspect-w-16 relative w-full'>
-          <img
-            src={feedback.coverPhotoUrl}
-            alt='cover-image'
-            className='absolute left-0 top-0 mx-auto h-full w-full rounded-lg object-cover'
-          />
+      {feedback.coverPhotoUrls.length > 0 && (
+        <div
+          className='relative block w-full rounded-lg border border-neutral-4 p-1'
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
+          <div className='flex w-full flex-col gap-[2px] overflow-hidden rounded-md'>
+            <div className='block w-full'>
+              <div className='flex w-full flex-row gap-[2px]'>
+                {(feedback.coverPhotoUrls.length <= 3
+                  ? feedback.coverPhotoUrls
+                  : feedback.coverPhotoUrls.slice(0, 2)
+                ).map((image, index) => (
+                  <div
+                    key={index}
+                    className='relative block w-full hover:cursor-pointer'
+                    onClick={() => handleShowImageSlider(image)}
+                  >
+                    <div className='aspect-h-9 aspect-w-16 relative block min-h-[150px] w-full overflow-hidden'>
+                      <img
+                        src={image}
+                        alt={`Uploaded image ${index + 1}`}
+                        className='absolute left-0 top-0 mx-auto h-full w-full object-cover'
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {feedback.coverPhotoUrls.length >= 4 && (
+              <div className='block w-full'>
+                <div className='flex w-full flex-row gap-[2px]'>
+                  {feedback.coverPhotoUrls.slice(2, 5).map((image, index) => (
+                    <div
+                      key={index}
+                      className='relative block w-full hover:cursor-pointer'
+                      onClick={() => handleShowImageSlider(image)}
+                    >
+                      <div className='aspect-h-9 aspect-w-16 relative block min-h-[150px] w-full overflow-hidden'>
+                        <img
+                          src={image}
+                          alt={`Uploaded image ${index + 1}`}
+                          className='absolute left-0 top-0 mx-auto h-full w-full object-cover'
+                        />
+                      </div>
+                      {feedback.coverPhotoUrls.length > 5 && index === 2 && (
+                        <div
+                          className='absolute left-0 top-0 flex h-full w-full items-center justify-center bg-neutral-6/60 text-4xl font-medium tracking-wider text-neutral-3 hover:cursor-pointer'
+                          onClick={() => handleShowImageSlider(image)}
+                        >
+                          +{feedback.coverPhotoUrls.length - 5}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
-
       <div className='flex w-full items-center justify-between'>
         <div className='flex w-full items-center justify-between gap-1'>
           <div className='flex items-center gap-1 rounded-full bg-transparent px-2 py-1 text-body-text-2 hover:cursor-pointer'>
@@ -68,12 +126,19 @@ export default function FeedbackContainer({ feedback }: FeedbackContainerProps) 
               className='select-none text-sm font-normal hover:cursor-pointer hover:underline hover:underline-offset-2'
               onClick={() => setIsShowLikes(true)}
             >
-              {feedback.likedNumber} lượt thích
+              {feedback.likedNumber || 0} lượt thích
             </span>
           </div>
         </div>
       </div>
       {isShowLikes && <PeopleLikedPopup id={feedback.id} type='feedback' setIsShowPopup={setIsShowLikes} />}
+      {isShowImageSlider && (
+        <ImageSlider
+          imageList={feedback.coverPhotoUrls}
+          currentImage={selectedImage}
+          onClose={() => setIsShowImageSlider(false)}
+        />
+      )}
     </div>
   )
 }

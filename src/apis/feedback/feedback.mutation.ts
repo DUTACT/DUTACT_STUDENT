@@ -8,7 +8,7 @@ export const createFeedback = (options?: UseMutationOptions<Feedback, ApiError, 
   return useMutation<Feedback, ApiError, Partial<FeedbackBody>>({
     mutationFn: async (body) => {
       const response = await mutationFormData<Feedback>({
-        url: getFeedbackUrl(),
+        url: `${getFeedbackUrl()}/v2`,
         method: 'POST',
         body
       })
@@ -38,7 +38,7 @@ export const editFeedback = (
   return useMutation<Feedback, ApiError, Partial<FeedbackBody>>({
     mutationFn: async (body) => {
       const response = await mutationFormData<Feedback>({
-        url: getFeedbackUrl(feedbackId),
+        url: `${getFeedbackUrl(feedbackId)}/v2`,
         method: 'PATCH',
         body
       })

@@ -3,6 +3,7 @@ export interface Feedback {
   content: string
   postedAt: string
   coverPhotoUrl: string | null
+  coverPhotoUrls: string[]
   likedNumber: number
   likedAt: string | null
   student: {
@@ -21,5 +22,13 @@ export interface FeedbackBody {
   eventId: number
   content: string
   coverPhoto?: File | null
+  keepCoverPhotoUrls?: string[]
+  coverPhotos?: File[]
   deleteCoverPhoto?: boolean
+}
+
+export interface CoverPhotoData {
+  type: 'file' | 'url'
+  file?: File
+  url?: string
 }

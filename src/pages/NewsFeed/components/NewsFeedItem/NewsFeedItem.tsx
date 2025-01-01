@@ -9,6 +9,7 @@ import { path } from 'src/routes/path'
 import { useNewsFeeds } from '../../hooks/useNewsFeeds'
 import { useState } from 'react'
 import PeopleLikedPopup from 'src/pages/DetailEvent/components/PeopleLikedPopup'
+import ImageSlider from 'src/components/ImageSlider'
 
 interface NewsFeedItemProps {
   newsFeed: NewsFeedIemType
@@ -17,6 +18,8 @@ interface NewsFeedItemProps {
 export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
   const navigate = useNavigate()
   const [isShowLikes, setIsShowLikes] = useState<boolean>(false)
+  const [selectedImage, setSelectedImage] = useState<string>('')
+  const [isShowImageSlider, setIsShowImageSlider] = useState<boolean>(false)
 
   const {
     onLikeNewsFeed: { mutate: likeNewsFeed },
@@ -29,6 +32,11 @@ export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
 
   const handleUnlikeNewsFeed = () => {
     unlikeNewsFeed({ id: newsFeed.id, type: newsFeed.type })
+  }
+
+  const handleShowImageSlider = (image: string) => {
+    setSelectedImage(image)
+    setIsShowImageSlider(true)
   }
 
   return (
@@ -57,13 +65,66 @@ export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
         Sự kiện: <span className='text-sm font-semibold'>{newsFeed.event.name}</span>
       </div>
       <p className='break-word flex whitespace-pre-line text-sm text-body-text'>{newsFeed.content}</p>
-      {newsFeed.coverPhotoUrl && (
-        <div className='aspect-h-9 aspect-w-16 relative w-full'>
-          <img
-            src={newsFeed.coverPhotoUrl}
-            alt='cover-image'
-            className='absolute left-0 top-0 mx-auto h-full w-full rounded-lg object-cover'
-          />
+      {newsFeed.coverPhotoUrls.length > 0 && (
+        <div
+          className='relative block w-full rounded-lg border border-neutral-4 p-1'
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
+          <div className='flex w-full flex-col gap-[2px] overflow-hidden rounded-md'>
+            <div className='block w-full'>
+              <div className='flex w-full flex-row gap-[2px]'>
+                {(newsFeed.coverPhotoUrls.length <= 3
+                  ? newsFeed.coverPhotoUrls
+                  : newsFeed.coverPhotoUrls.slice(0, 2)
+                ).map((image, index) => (
+                  <div
+                    key={index}
+                    className='relative block w-full hover:cursor-pointer'
+                    onClick={() => handleShowImageSlider(image)}
+                  >
+                    <div className='aspect-h-9 aspect-w-16 relative block min-h-[150px] w-full overflow-hidden'>
+                      <img
+                        src={image}
+                        alt={`Uploaded image ${index + 1}`}
+                        className='absolute left-0 top-0 mx-auto h-full w-full object-cover'
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {newsFeed.coverPhotoUrls.length >= 4 && (
+              <div className='block w-full'>
+                <div className='flex w-full flex-row gap-[2px]'>
+                  {newsFeed.coverPhotoUrls.slice(2, 5).map((image, index) => (
+                    <div
+                      key={index}
+                      className='relative block w-full hover:cursor-pointer'
+                      onClick={() => handleShowImageSlider(image)}
+                    >
+                      <div className='aspect-h-9 aspect-w-16 relative block min-h-[150px] w-full overflow-hidden'>
+                        <img
+                          src={image}
+                          alt={`Uploaded image ${index + 1}`}
+                          className='absolute left-0 top-0 mx-auto h-full w-full object-cover'
+                        />
+                      </div>
+                      {newsFeed.coverPhotoUrls.length > 5 && index === 2 && (
+                        <div
+                          className='absolute left-0 top-0 flex h-full w-full items-center justify-center bg-neutral-6/60 text-4xl font-medium tracking-wider text-neutral-3 hover:cursor-pointer'
+                          onClick={() => handleShowImageSlider(image)}
+                        >
+                          +{newsFeed.coverPhotoUrls.length - 5}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
       <div className='flex w-full items-center justify-between'>
@@ -81,6 +142,13 @@ export default function NewsFeedItem({ newsFeed }: NewsFeedItemProps) {
         </div>
       </div>
       {isShowLikes && <PeopleLikedPopup id={newsFeed.id} type={newsFeed.type} setIsShowPopup={setIsShowLikes} />}
+      {isShowImageSlider && (
+        <ImageSlider
+          imageList={newsFeed.coverPhotoUrls}
+          currentImage={selectedImage}
+          onClose={() => setIsShowImageSlider(false)}
+        />
+      )}
     </div>
   )
 }

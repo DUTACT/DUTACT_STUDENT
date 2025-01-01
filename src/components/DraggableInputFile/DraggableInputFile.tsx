@@ -156,7 +156,7 @@ export default function DraggableInputFile<
       >
         {!uploadedImage ? (
           <Fragment>
-            <ImageIcon className='h-logo-md w-logo-md' />
+            <ImageIcon className='w-logo-md h-logo-md' />
             <p className='mt-2'>Kéo và thả ảnh vào đây</p>
             <p>
               hoặc <span className='text-primary/80 hover:text-primary'>tải ảnh lên</span>
@@ -166,7 +166,12 @@ export default function DraggableInputFile<
           </Fragment>
         ) : (
           <Fragment>
-            <div className='relative mt-2 w-full'>
+            <div
+              className='relative mt-2 w-full'
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
               <div className='aspect-h-9 aspect-w-16 relative block min-h-[50px] w-full min-w-full overflow-hidden rounded-md border-[1px] border-neutral-4'>
                 <img
                   src={uploadedImage}
