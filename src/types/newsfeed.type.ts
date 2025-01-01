@@ -7,7 +7,7 @@ type BaseNewsFeed = {
   id: number
   content: string
   postedAt: string
-  coverPhotoUrl: string | null
+  coverPhotoUrls: string[]
   likedNumber: number
   likedAt: string | null
 }

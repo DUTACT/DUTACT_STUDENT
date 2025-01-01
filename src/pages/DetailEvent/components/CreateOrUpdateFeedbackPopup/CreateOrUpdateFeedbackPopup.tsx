@@ -4,9 +4,8 @@ import CloseIcon from 'src/assets/icons/i-close.svg?react'
 import DUTLogo from 'src/assets/img/dut-logo.jpg'
 import Input from 'src/components/Input'
 import Button from 'src/components/Button'
-import DraggableInputFile from 'src/components/DraggableInputFile'
 import { useForm, useWatch } from 'react-hook-form'
-import { FeedbackBody } from 'src/types/feedback.type'
+import { CoverPhotoData, FeedbackBody } from 'src/types/feedback.type'
 import { useEventId } from '../../hooks/useEventId'
 import { useDetailEvent } from '../../hooks/useDetailEvent'
 import { useFeedbacks } from '../../hooks/useFeedbacks'
@@ -15,10 +14,15 @@ import { SUCCESS_MESSAGE } from 'src/constants/message'
 import { cn } from 'src/lib/tailwind/utils'
 import { useFeedback } from '../../hooks/useFeedback'
 import { useEffect, useState } from 'react'
+import DraggableImages from 'src/components/DraggableImages'
 
 interface CreateOrUpdateFeedbackPopupProps {
   setIsShowCreateOrUpdateFeedbackPopup: React.Dispatch<React.SetStateAction<boolean>>
   updatedFeedbackId?: number
+}
+
+type FormData = Partial<FeedbackBody> & {
+  coverPhotoArray?: Array<CoverPhotoData>
 }
 
 export default function CreateOrUpdateFeedbackPopup({
@@ -36,10 +40,16 @@ export default function CreateOrUpdateFeedbackPopup({
 
   const [removedCoverPhoto, setRemovedCoverPhoto] = useState<boolean>(false)
 
-  const { control, handleSubmit, setValue, reset } = useForm<Partial<FeedbackBody>>({
+  const { control, handleSubmit, setValue, reset } = useForm<FormData>({
     defaultValues: {
       eventId,
-      content: ''
+      content: '',
+      coverPhotoArray: updatedFeedbackId
+        ? feedback?.coverPhotoUrls.map((coverPhotoUrl) => ({
+            type: 'url',
+            url: coverPhotoUrl
+          })) || []
+        : undefined
     }
   })
 
@@ -49,6 +59,7 @@ export default function CreateOrUpdateFeedbackPopup({
     if (updatedFeedbackId && feedback) {
       setValue('content', feedback.content)
     } else {
+      console.log('reset')
       reset()
     }
   }, [feedback, updatedFeedbackId, setValue])
@@ -58,6 +69,23 @@ export default function CreateOrUpdateFeedbackPopup({
   }, [setIsShowCreateOrUpdateFeedbackPopup])
 
   const onSubmit = handleSubmit((data) => {
+    if (data.coverPhotoArray) {
+      console.log('data', data.coverPhotoArray)
+      if (data.coverPhotoArray.length > 0) {
+        const keepCoverPhotoUrls: string[] = []
+        const newCoverPhotos: File[] = []
+        data.coverPhotoArray.forEach((photo) => {
+          if (photo.type === 'file') {
+            newCoverPhotos.push(photo.file as File)
+          } else {
+            keepCoverPhotoUrls.push(photo.url as string)
+          }
+        })
+        data.keepCoverPhotoUrls = keepCoverPhotoUrls
+        data.coverPhotos = newCoverPhotos
+      }
+      delete data.coverPhotoArray
+    }
     if (updatedFeedbackId) {
       if (!data.coverPhoto) {
         delete data.coverPhoto
@@ -82,7 +110,7 @@ export default function CreateOrUpdateFeedbackPopup({
       if (data.deleteCoverPhoto === undefined) {
         delete data.deleteCoverPhoto
       }
-      mutateCreateFeedback(data, {
+      mutateCreateFeedback(data as Partial<FeedbackBody>, {
         onSuccess: () => {
           toast.success(SUCCESS_MESSAGE.CREATE_FEEDBACK)
           setIsShowCreateOrUpdateFeedbackPopup(false)
@@ -135,14 +163,11 @@ export default function CreateOrUpdateFeedbackPopup({
                 classNameInput='mt-0 h-auto min-h-fit w-full resize-none overflow-hidden rounded-none border-none p-0 text-sm focus:outline-transparent'
                 autoResize
               />
-              <DraggableInputFile
-                name='coverPhoto'
+              <DraggableImages
+                name='coverPhotoArray'
                 control={control}
                 showIsRequired={false}
                 classNameWrapper='text-sm w-full flex-1'
-                initialImageUrl={feedback?.coverPhotoUrl || undefined}
-                removedInitialImage={removedCoverPhoto}
-                setRemovedInitialImage={setRemovedCoverPhoto}
               />
             </div>
           </div>
