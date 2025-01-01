@@ -3,19 +3,29 @@ import { toast } from 'react-toastify'
 import { useNotifications } from 'src/hooks/useNotifications'
 import NotificationContainer from './components/NotificationContainer'
 import { useWebSocketContext } from 'src/contexts/websocket.context'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
+import { markAllNotificationsAsRead } from 'src/apis/notification'
 
 export default function Notification() {
   const { notifications, fetchMoreNotifications, hasNextPage, isFetchingNextPage, isLoading, error } =
     useNotifications()
   const { setNotificationCount } = useWebSocketContext()
+  const { mutate: mutateMarkAllNotificationsAsRead } = markAllNotificationsAsRead()
   const { closeSnackbar } = useSnackbar()
+  const [isFetchedData, setIsFetchedData] = useState<boolean>(false)
 
   useEffect(() => {
     setNotificationCount(0)
     closeSnackbar()
   }, [])
+
+  useEffect(() => {
+    if (!isFetchedData && notifications.length > 0) {
+      setIsFetchedData(true)
+      mutateMarkAllNotificationsAsRead()
+    }
+  }, [notifications])
 
   const { ref: scrollRef, inView } = useInView({
     threshold: 1.0,

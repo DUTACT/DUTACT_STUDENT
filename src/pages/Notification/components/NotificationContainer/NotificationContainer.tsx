@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import { DATE_TIME_FORMATS } from 'src/constants/common'
+import { cn } from 'src/lib/tailwind/utils'
 import { path } from 'src/routes/path'
 import { EventNotification } from 'src/types/notification.type'
 import { timeAgo } from 'src/utils/datetime'
@@ -22,7 +23,13 @@ export default function NotificationContainer({ notification }: NotificationCont
 
   return (
     <div
-      className='flex flex-col gap-2 rounded-md border border-neutral-3 bg-neutral-0 px-4 py-2 text-neutral-6 shadow-custom hover:cursor-pointer'
+      className={cn(
+        'flex flex-col gap-2 rounded-md border border-neutral-3 px-4 py-2 text-neutral-6 shadow-custom hover:cursor-pointer',
+        {
+          'bg-neutral-0': notification.is_read,
+          'bg-semantic-secondary-background/30': !notification.is_read
+        }
+      )}
       onClick={navigateToEventPage}
     >
       <div className='text-sm font-medium text-neutral-7'>

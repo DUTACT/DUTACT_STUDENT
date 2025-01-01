@@ -7,6 +7,7 @@ export type CommonNotification = {
   account_id: number
   created_at: string
   notification_type: NotificationType
+  is_read: boolean
 }
 
 export type PostCreatedNotification = CommonNotification & {
