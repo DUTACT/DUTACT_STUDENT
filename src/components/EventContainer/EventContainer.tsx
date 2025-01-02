@@ -17,6 +17,7 @@ import { path } from 'src/routes/path'
 import { useState } from 'react'
 import FollowerListPopup from '../FollowerListPopup'
 import RegistrantListPopup from '../RegistrantListPopup'
+import ImageSlider from '../ImageSlider'
 
 interface EventContainerProps {
   event: EventOfOrganizer
@@ -26,6 +27,8 @@ export default function EventContainer({ event }: EventContainerProps) {
   const navigate = useNavigate()
   const [isShowFollowers, setIsShowFollowers] = useState<boolean>(false)
   const [isShowRegistrants, setIsShowRegistrants] = useState<boolean>(false)
+  const [selectedImage, setSelectedImage] = useState<string>('')
+  const [isShowImageSlider, setIsShowImageSlider] = useState<boolean>(false)
 
   const {
     register: { mutate: registerEvent, isPending: isRegisterPending },
@@ -96,7 +99,13 @@ export default function EventContainer({ event }: EventContainerProps) {
         </span>
       </div>
       <p className='break-word flex whitespace-pre-line text-sm text-body-text'>{event.content}</p>
-      <div className='aspect-h-9 aspect-w-16 relative w-full'>
+      <div
+        className='aspect-h-9 aspect-w-16 relative w-full'
+        onClick={() => {
+          setSelectedImage(event.coverPhotoUrl)
+          setIsShowImageSlider(true)
+        }}
+      >
         <img
           src={event.coverPhotoUrl}
           alt='cover-image'
@@ -173,6 +182,13 @@ export default function EventContainer({ event }: EventContainerProps) {
       </div>
       {isShowFollowers && <FollowerListPopup eventId={event.id} setIsShowPopup={setIsShowFollowers} />}
       {isShowRegistrants && <RegistrantListPopup eventId={event.id} setIsShowPopup={setIsShowRegistrants} />}
+      {isShowImageSlider && (
+        <ImageSlider
+          imageList={event.coverPhotoUrls}
+          currentImage={selectedImage}
+          onClose={() => setIsShowImageSlider(false)}
+        />
+      )}
     </div>
   )
 }

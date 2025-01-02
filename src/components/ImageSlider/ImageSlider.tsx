@@ -37,6 +37,7 @@ export default function ImageSlider({ imageList, currentImage, onClose }: ImageS
 
   return createPortal(
     <LightGallery
+      key={currentImage}
       onInit={(ref) => (lightGalleryRef.current = ref)}
       speed={500}
       plugins={[lgThumbnail, lgZoom, lgFullscreen]}

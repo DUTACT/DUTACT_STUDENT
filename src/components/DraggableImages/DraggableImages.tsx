@@ -1,4 +1,4 @@
-import { useRef, useState, Fragment } from 'react'
+import { useRef, useState, Fragment, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { CONFIG } from 'src/constants/config'
 import ImageIcon from 'src/assets/icons/i-image.svg?react'
@@ -40,6 +40,10 @@ export default function DraggableImages<
   const [isShowImageSlider, setIsShowImageSlider] = useState<boolean>(false)
   const [selectedImage, setSelectedImage] = useState<string>('')
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    setUploadedImages(field.value?.length ? field.value : [])
+  }, [field])
 
   const handleFile = (fileFromLocal?: File) => {
     if (fileFromLocal) {
