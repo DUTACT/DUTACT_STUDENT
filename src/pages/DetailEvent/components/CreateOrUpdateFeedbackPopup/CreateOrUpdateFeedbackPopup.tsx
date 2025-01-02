@@ -58,8 +58,17 @@ export default function CreateOrUpdateFeedbackPopup({
   useEffect(() => {
     if (updatedFeedbackId && feedback) {
       setValue('content', feedback.content)
+      setValue(
+        'coverPhotoArray',
+        feedback.coverPhotoUrls.map(
+          (coverPhotoUrl) =>
+            ({
+              type: 'url',
+              url: coverPhotoUrl
+            }) as CoverPhotoData
+        ) || []
+      )
     } else {
-      console.log('reset')
       reset()
     }
   }, [feedback, updatedFeedbackId, setValue])

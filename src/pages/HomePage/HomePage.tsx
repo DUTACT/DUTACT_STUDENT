@@ -45,7 +45,9 @@ export default function HomePage() {
         )}
         {!isLoading &&
           (isNewEvent ? newEvents : upcomingEvents).length > 0 &&
-          (isNewEvent ? newEvents : upcomingEvents).map((event) => <EventContainer key={event.id} event={event} />)}
+          (isNewEvent ? newEvents : upcomingEvents)
+            .reverse()
+            .map((event) => <EventContainer key={event.id} event={event} />)}
       </main>
     </div>
   )

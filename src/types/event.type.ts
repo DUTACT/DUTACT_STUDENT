@@ -25,6 +25,7 @@ export interface EventOfOrganizer {
     moderatedAt: string
   }
   coverPhotoUrl: string
+  coverPhotoUrls: string[]
   organizer: OrganizerInformation
 }
 
