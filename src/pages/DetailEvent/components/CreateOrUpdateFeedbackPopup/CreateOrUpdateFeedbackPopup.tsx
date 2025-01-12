@@ -99,6 +99,9 @@ export default function CreateOrUpdateFeedbackPopup({
       if (!data.coverPhoto) {
         delete data.coverPhoto
       }
+      if (!data.keepCoverPhotoUrls) {
+        data.keepCoverPhotoUrls = []
+      }
       editFeedbackMutationResult &&
         editFeedbackMutationResult.mutate(
           { ...data, deleteCoverPhoto: removedCoverPhoto },
